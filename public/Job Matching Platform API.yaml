@@ -1,0 +1,3223 @@
+openapi: 3.0.3
+info:
+  title: Job Matching Platform API
+  version: 1.0.0
+  description: API for job matching platform connecting candidates with employers
+paths:
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      description: Login user and return JWT tokens
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      description: Logout user (client should delete tokens)
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/auth/me/:
+    get:
+      operationId: auth_me_retrieve
+      description: Get current user information
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/auth/password-reset/confirm/{token}/:
+    post:
+      operationId: auth_password_reset_confirm_create
+      description: Confirm password reset with token
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/password-reset/request/:
+    post:
+      operationId: auth_password_reset_request_create
+      description: Request password reset
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/register/:
+    post:
+      operationId: auth_register_create
+      description: Register a new user
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/token/refresh/:
+    post:
+      operationId: auth_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/auth/verify-email/{token}/:
+    post:
+      operationId: auth_verify_email_create
+      description: Verify email with token
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      tags:
+      - auth
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/candidates/:
+    get:
+      operationId: candidates_list
+      description: ViewSet for Candidate Profile
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - candidates
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCandidateProfileList'
+          description: ''
+    post:
+      operationId: candidates_create
+      description: ViewSet for Candidate Profile
+      tags:
+      - candidates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+  /api/candidates/{id}/:
+    get:
+      operationId: candidates_retrieve
+      description: ViewSet for Candidate Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Candidate Profile.
+        required: true
+      tags:
+      - candidates
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+    put:
+      operationId: candidates_update
+      description: ViewSet for Candidate Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Candidate Profile.
+        required: true
+      tags:
+      - candidates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+    patch:
+      operationId: candidates_partial_update
+      description: ViewSet for Candidate Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Candidate Profile.
+        required: true
+      tags:
+      - candidates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCandidateProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCandidateProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCandidateProfileRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+    delete:
+      operationId: candidates_destroy
+      description: ViewSet for Candidate Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Candidate Profile.
+        required: true
+      tags:
+      - candidates
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/candidates/complete/:
+    post:
+      operationId: candidates_complete_create
+      description: Complete profile after registration
+      tags:
+      - candidates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+  /api/candidates/dashboard/:
+    get:
+      operationId: candidates_dashboard_retrieve
+      description: Get dashboard statistics for candidate
+      tags:
+      - candidates
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+  /api/candidates/me/:
+    get:
+      operationId: candidates_me_retrieve
+      description: Get current candidate's profile
+      tags:
+      - candidates
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CandidateProfile'
+          description: ''
+  /api/categories/:
+    get:
+      operationId: categories_list
+      description: ViewSet for Job Categories (read-only)
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - categories
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCategoryList'
+          description: ''
+  /api/categories/{id}/:
+    get:
+      operationId: categories_retrieve
+      description: ViewSet for Job Categories (read-only)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Category.
+        required: true
+      tags:
+      - categories
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/conversations/:
+    get:
+      operationId: conversations_list
+      description: ViewSet for Conversations
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - conversations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConversationList'
+          description: ''
+    post:
+      operationId: conversations_create
+      description: ViewSet for Conversations
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+          description: ''
+  /api/conversations/{id}/:
+    get:
+      operationId: conversations_retrieve
+      description: Get conversation with messages and mark as read
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Conversation.
+        required: true
+      tags:
+      - conversations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetail'
+          description: ''
+    put:
+      operationId: conversations_update
+      description: ViewSet for Conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+          description: ''
+    patch:
+      operationId: conversations_partial_update
+      description: ViewSet for Conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConversationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedConversationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedConversationRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+          description: ''
+    delete:
+      operationId: conversations_destroy
+      description: ViewSet for Conversations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Conversation.
+        required: true
+      tags:
+      - conversations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/conversations/start/:
+    post:
+      operationId: conversations_start_create
+      description: Start a new conversation or get existing one
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversation'
+          description: ''
+  /api/employers/:
+    get:
+      operationId: employers_list
+      description: ViewSet for Employer Profile
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - employers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmployerProfileList'
+          description: ''
+    post:
+      operationId: employers_create
+      description: ViewSet for Employer Profile
+      tags:
+      - employers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+  /api/employers/{id}/:
+    get:
+      operationId: employers_retrieve
+      description: ViewSet for Employer Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Employer Profile.
+        required: true
+      tags:
+      - employers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+    put:
+      operationId: employers_update
+      description: ViewSet for Employer Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Employer Profile.
+        required: true
+      tags:
+      - employers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+    patch:
+      operationId: employers_partial_update
+      description: ViewSet for Employer Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Employer Profile.
+        required: true
+      tags:
+      - employers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployerProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployerProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmployerProfileRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+    delete:
+      operationId: employers_destroy
+      description: ViewSet for Employer Profile
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Employer Profile.
+        required: true
+      tags:
+      - employers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/employers/complete/:
+    post:
+      operationId: employers_complete_create
+      description: Complete profile after registration
+      tags:
+      - employers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmployerProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+  /api/employers/dashboard/:
+    get:
+      operationId: employers_dashboard_retrieve
+      description: Get dashboard statistics for employer
+      tags:
+      - employers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+  /api/employers/me/:
+    get:
+      operationId: employers_me_retrieve
+      description: Get current employer's profile
+      tags:
+      - employers
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployerProfile'
+          description: ''
+  /api/invitations/:
+    get:
+      operationId: invitations_list
+      description: ViewSet for Invitations
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - invitations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInvitationList'
+          description: ''
+    post:
+      operationId: invitations_create
+      description: ViewSet for Invitations
+      tags:
+      - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InvitationCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InvitationCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvitationCreate'
+          description: ''
+  /api/invitations/{id}/:
+    get:
+      operationId: invitations_retrieve
+      description: ViewSet for Invitations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Invitation.
+        required: true
+      tags:
+      - invitations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+    put:
+      operationId: invitations_update
+      description: ViewSet for Invitations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Invitation.
+        required: true
+      tags:
+      - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+    patch:
+      operationId: invitations_partial_update
+      description: ViewSet for Invitations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Invitation.
+        required: true
+      tags:
+      - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInvitationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInvitationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInvitationRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+    delete:
+      operationId: invitations_destroy
+      description: ViewSet for Invitations
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Invitation.
+        required: true
+      tags:
+      - invitations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/invitations/{id}/accept/:
+    post:
+      operationId: invitations_accept_create
+      description: Accept an invitation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Invitation.
+        required: true
+      tags:
+      - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+  /api/invitations/{id}/reject/:
+    post:
+      operationId: invitations_reject_create
+      description: Reject an invitation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Invitation.
+        required: true
+      tags:
+      - invitations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InvitationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+  /api/invitations/pending/:
+    get:
+      operationId: invitations_pending_retrieve
+      description: Get pending invitations
+      tags:
+      - invitations
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+          description: ''
+  /api/likes/:
+    get:
+      operationId: likes_list
+      description: ViewSet for Likes
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - likes
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLikeList'
+          description: ''
+    post:
+      operationId: likes_create
+      description: ViewSet for Likes
+      tags:
+      - likes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+  /api/likes/{id}/:
+    get:
+      operationId: likes_retrieve
+      description: ViewSet for Likes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Like.
+        required: true
+      tags:
+      - likes
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    put:
+      operationId: likes_update
+      description: ViewSet for Likes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Like.
+        required: true
+      tags:
+      - likes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    patch:
+      operationId: likes_partial_update
+      description: ViewSet for Likes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Like.
+        required: true
+      tags:
+      - likes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLikeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLikeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLikeRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+    delete:
+      operationId: likes_destroy
+      description: ViewSet for Likes
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Like.
+        required: true
+      tags:
+      - likes
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/likes/toggle/:
+    post:
+      operationId: likes_toggle_create
+      description: Toggle like on a posting
+      tags:
+      - likes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LikeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Like'
+          description: ''
+  /api/messages/:
+    get:
+      operationId: messages_list
+      description: ViewSet for Messages
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - messages
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMessageList'
+          description: ''
+    post:
+      operationId: messages_create
+      description: ViewSet for Messages
+      tags:
+      - messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+  /api/messages/{id}/:
+    get:
+      operationId: messages_retrieve
+      description: ViewSet for Messages
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Message.
+        required: true
+      tags:
+      - messages
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+    put:
+      operationId: messages_update
+      description: ViewSet for Messages
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Message.
+        required: true
+      tags:
+      - messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MessageRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+    patch:
+      operationId: messages_partial_update
+      description: ViewSet for Messages
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Message.
+        required: true
+      tags:
+      - messages
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMessageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMessageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMessageRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+    delete:
+      operationId: messages_destroy
+      description: ViewSet for Messages
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Message.
+        required: true
+      tags:
+      - messages
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/notifications/:
+    get:
+      operationId: notifications_list
+      description: ViewSet for Notifications
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/notifications/{id}/:
+    get:
+      operationId: notifications_retrieve
+      description: ViewSet for Notifications
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Notification.
+        required: true
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/notifications/{id}/mark_read/:
+    post:
+      operationId: notifications_mark_read_create
+      description: Mark notification as read
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Notification.
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/notifications/mark_all_read/:
+    post:
+      operationId: notifications_mark_all_read_create
+      description: Mark all notifications as read
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/notifications/unread_count/:
+    get:
+      operationId: notifications_unread_count_retrieve
+      description: Get unread notification count
+      tags:
+      - notifications
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/postings/:
+    get:
+      operationId: postings_list
+      description: ViewSet for Job Postings
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - postings
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobPostingListList'
+          description: ''
+    post:
+      operationId: postings_create
+      description: ViewSet for Job Postings
+      tags:
+      - postings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobPostingCreateUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JobPostingCreateUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JobPostingCreateUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPostingCreateUpdate'
+          description: ''
+  /api/postings/{id}/:
+    get:
+      operationId: postings_retrieve
+      description: ViewSet for Job Postings
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Job Posting.
+        required: true
+      tags:
+      - postings
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPostingDetail'
+          description: ''
+    put:
+      operationId: postings_update
+      description: ViewSet for Job Postings
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Job Posting.
+        required: true
+      tags:
+      - postings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobPostingCreateUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JobPostingCreateUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JobPostingCreateUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPostingCreateUpdate'
+          description: ''
+    patch:
+      operationId: postings_partial_update
+      description: ViewSet for Job Postings
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Job Posting.
+        required: true
+      tags:
+      - postings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedJobPostingCreateUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedJobPostingCreateUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedJobPostingCreateUpdateRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPostingCreateUpdate'
+          description: ''
+    delete:
+      operationId: postings_destroy
+      description: ViewSet for Job Postings
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Job Posting.
+        required: true
+      tags:
+      - postings
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/postings/{id}/toggle_status/:
+    post:
+      operationId: postings_toggle_status_create
+      description: Toggle posting active status
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Job Posting.
+        required: true
+      tags:
+      - postings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobPostingDetailRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/JobPostingDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/JobPostingDetailRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPostingDetail'
+          description: ''
+  /api/postings/my_postings/:
+    get:
+      operationId: postings_my_postings_retrieve
+      description: Get current candidate's postings
+      tags:
+      - postings
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobPostingDetail'
+          description: ''
+components:
+  schemas:
+    AvailabilityStatusEnum:
+      enum:
+      - actively_looking
+      - open_to_offers
+      - not_available
+      type: string
+      description: |-
+        * `actively_looking` - Actively Looking for Job
+        * `open_to_offers` - Open to Offers
+        * `not_available` - Not Available
+    BlankEnum:
+      enum:
+      - ''
+    CandidateProfile:
+      type: object
+      description: Serializer for Candidate Profile
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        surname:
+          type: string
+          maxLength: 100
+        phone:
+          type: string
+          maxLength: 20
+        city:
+          $ref: '#/components/schemas/CityEnum'
+        profile_image:
+          type: string
+          format: uri
+          nullable: true
+        about_me:
+          type: string
+          nullable: true
+          maxLength: 1000
+        telegram_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        github_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        sphere:
+          type: string
+          nullable: true
+          maxLength: 200
+        availability_status:
+          $ref: '#/components/schemas/AvailabilityStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - city
+      - created_at
+      - id
+      - name
+      - phone
+      - surname
+      - updated_at
+      - user
+      - user_email
+    CandidateProfileRequest:
+      type: object
+      description: Serializer for Candidate Profile
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        surname:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        city:
+          $ref: '#/components/schemas/CityEnum'
+        profile_image:
+          type: string
+          format: binary
+          nullable: true
+        about_me:
+          type: string
+          nullable: true
+          maxLength: 1000
+        telegram_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        github_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        sphere:
+          type: string
+          nullable: true
+          maxLength: 200
+        availability_status:
+          $ref: '#/components/schemas/AvailabilityStatusEnum'
+      required:
+      - city
+      - name
+      - phone
+      - surname
+    Category:
+      type: object
+      description: Serializer for Job Category
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name_en:
+          type: string
+          maxLength: 100
+        name_ru:
+          type: string
+          maxLength: 100
+        name_uz:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        is_active:
+          type: boolean
+      required:
+      - id
+      - name_en
+      - name_ru
+      - name_uz
+      - slug
+    CityEnum:
+      enum:
+      - tashkent_city
+      - tashkent_region
+      - andijan
+      - bukhara
+      - fergana
+      - jizzakh
+      - namangan
+      - navoiy
+      - kashkadarya
+      - samarkand
+      - sirdarya
+      - surkhandarya
+      - karakalpakstan
+      type: string
+      description: |-
+        * `tashkent_city` - Tashkent City
+        * `tashkent_region` - Tashkent Region
+        * `andijan` - Andijan
+        * `bukhara` - Bukhara
+        * `fergana` - Fergana
+        * `jizzakh` - Jizzakh
+        * `namangan` - Namangan
+        * `navoiy` - Navoiy
+        * `kashkadarya` - Kashkadarya
+        * `samarkand` - Samarkand
+        * `sirdarya` - Sirdarya
+        * `surkhandarya` - Surkhandarya
+        * `karakalpakstan` - Karakalpakstan
+    Conversation:
+      type: object
+      description: Serializer for Conversation
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        participant_one:
+          type: integer
+        participant_two:
+          type: integer
+        other_participant:
+          type: string
+          readOnly: true
+        last_message:
+          type: string
+          readOnly: true
+        unread_count:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - last_message
+      - other_participant
+      - participant_one
+      - participant_two
+      - unread_count
+      - updated_at
+    ConversationDetail:
+      type: object
+      description: Serializer for Conversation with messages
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        participant_one:
+          type: integer
+        participant_two:
+          type: integer
+        other_participant:
+          type: string
+          readOnly: true
+        last_message:
+          type: string
+          readOnly: true
+        unread_count:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - last_message
+      - messages
+      - other_participant
+      - participant_one
+      - participant_two
+      - unread_count
+      - updated_at
+    ConversationRequest:
+      type: object
+      description: Serializer for Conversation
+      properties:
+        participant_one:
+          type: integer
+        participant_two:
+          type: integer
+      required:
+      - participant_one
+      - participant_two
+    EmployerProfile:
+      type: object
+      description: Serializer for Employer Profile
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+        user_email:
+          type: string
+          format: email
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        surname:
+          type: string
+          maxLength: 100
+        phone:
+          type: string
+          maxLength: 20
+        location:
+          $ref: '#/components/schemas/LocationEnum'
+        company_name:
+          type: string
+          nullable: true
+          maxLength: 200
+        position:
+          type: string
+          nullable: true
+          maxLength: 100
+        profile_image:
+          type: string
+          format: uri
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        telegram_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - location
+      - name
+      - phone
+      - surname
+      - updated_at
+      - user
+      - user_email
+    EmployerProfileRequest:
+      type: object
+      description: Serializer for Employer Profile
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        surname:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        location:
+          $ref: '#/components/schemas/LocationEnum'
+        company_name:
+          type: string
+          nullable: true
+          maxLength: 200
+        position:
+          type: string
+          nullable: true
+          maxLength: 100
+        profile_image:
+          type: string
+          format: binary
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        telegram_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+      required:
+      - location
+      - name
+      - phone
+      - surname
+    EmploymentTypeEnum:
+      enum:
+      - full_time
+      - part_time
+      - contract
+      - freelance
+      - internship
+      type: string
+      description: |-
+        * `full_time` - Full-time
+        * `part_time` - Part-time
+        * `contract` - Contract
+        * `freelance` - Freelance
+        * `internship` - Internship
+    Invitation:
+      type: object
+      description: Serializer for Invitation
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employer:
+          type: integer
+          readOnly: true
+        employer_company:
+          type: string
+          readOnly: true
+        candidate:
+          type: integer
+          readOnly: true
+        candidate_name:
+          type: string
+          readOnly: true
+        message:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - candidate
+      - candidate_name
+      - created_at
+      - employer
+      - employer_company
+      - id
+      - message
+      - updated_at
+    InvitationCreate:
+      type: object
+      description: Serializer for creating Invitation
+      properties:
+        candidate:
+          type: integer
+        message:
+          type: string
+      required:
+      - candidate
+      - message
+    InvitationCreateRequest:
+      type: object
+      description: Serializer for creating Invitation
+      properties:
+        candidate:
+          type: integer
+        message:
+          type: string
+          minLength: 1
+      required:
+      - candidate
+      - message
+    InvitationRequest:
+      type: object
+      description: Serializer for Invitation
+      properties:
+        message:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+      required:
+      - message
+    JobPostingCreateUpdate:
+      type: object
+      description: Serializer for creating/updating Job Posting
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        category:
+          type: integer
+        skills:
+          type: string
+          nullable: true
+        programming_languages:
+          type: string
+          nullable: true
+        spoken_languages:
+          type: string
+          nullable: true
+        years_of_experience:
+          type: integer
+          maximum: 50
+          minimum: 0
+          nullable: true
+        expected_salary:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Expected salary in USD per month
+        work_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/WorkTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        employment_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        education:
+          type: string
+          nullable: true
+        certifications:
+          type: string
+          nullable: true
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        github_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        portfolio_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        resume_file:
+          type: string
+          format: uri
+          nullable: true
+        additional_details:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - category
+      - description
+      - title
+    JobPostingCreateUpdateRequest:
+      type: object
+      description: Serializer for creating/updating Job Posting
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+        category:
+          type: integer
+        skills:
+          type: string
+          nullable: true
+        programming_languages:
+          type: string
+          nullable: true
+        spoken_languages:
+          type: string
+          nullable: true
+        years_of_experience:
+          type: integer
+          maximum: 50
+          minimum: 0
+          nullable: true
+        expected_salary:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Expected salary in USD per month
+        work_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/WorkTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        employment_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        education:
+          type: string
+          nullable: true
+        certifications:
+          type: string
+          nullable: true
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        github_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        portfolio_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        resume_file:
+          type: string
+          format: binary
+          nullable: true
+        additional_details:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - category
+      - description
+      - title
+    JobPostingDetail:
+      type: object
+      description: Serializer for Job Posting detail view
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        candidate:
+          type: integer
+          readOnly: true
+        candidate_profile:
+          allOf:
+          - $ref: '#/components/schemas/CandidateProfile'
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+        category:
+          type: integer
+        category_name:
+          type: string
+          readOnly: true
+        skills:
+          type: string
+          nullable: true
+        programming_languages:
+          type: string
+          nullable: true
+        spoken_languages:
+          type: string
+          nullable: true
+        years_of_experience:
+          type: integer
+          maximum: 50
+          minimum: 0
+          nullable: true
+        expected_salary:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Expected salary in USD per month
+        work_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/WorkTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        employment_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        education:
+          type: string
+          nullable: true
+        certifications:
+          type: string
+          nullable: true
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        github_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        portfolio_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        resume_file:
+          type: string
+          format: uri
+          nullable: true
+        additional_details:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+        like_count:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - candidate
+      - candidate_profile
+      - category
+      - category_name
+      - created_at
+      - description
+      - id
+      - like_count
+      - title
+      - updated_at
+    JobPostingDetailRequest:
+      type: object
+      description: Serializer for Job Posting detail view
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+        category:
+          type: integer
+        skills:
+          type: string
+          nullable: true
+        programming_languages:
+          type: string
+          nullable: true
+        spoken_languages:
+          type: string
+          nullable: true
+        years_of_experience:
+          type: integer
+          maximum: 50
+          minimum: 0
+          nullable: true
+        expected_salary:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Expected salary in USD per month
+        work_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/WorkTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        employment_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        education:
+          type: string
+          nullable: true
+        certifications:
+          type: string
+          nullable: true
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        github_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        portfolio_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        resume_file:
+          type: string
+          format: binary
+          nullable: true
+        additional_details:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - category
+      - description
+      - title
+    JobPostingList:
+      type: object
+      description: Serializer for Job Posting list view
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        category:
+          type: integer
+        category_name:
+          type: string
+          readOnly: true
+        candidate:
+          type: integer
+          readOnly: true
+        candidate_name:
+          type: string
+          readOnly: true
+        candidate_city:
+          type: string
+          readOnly: true
+        years_of_experience:
+          type: integer
+          maximum: 50
+          minimum: 0
+          nullable: true
+        is_active:
+          type: boolean
+        like_count:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - candidate
+      - candidate_city
+      - candidate_name
+      - category
+      - category_name
+      - created_at
+      - id
+      - like_count
+      - title
+    Like:
+      type: object
+      description: Serializer for Like
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        employer:
+          type: integer
+          readOnly: true
+        posting:
+          type: integer
+        posting_title:
+          type: string
+          readOnly: true
+        candidate_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - candidate_name
+      - created_at
+      - employer
+      - id
+      - posting
+      - posting_title
+    LikeRequest:
+      type: object
+      description: Serializer for Like
+      properties:
+        posting:
+          type: integer
+      required:
+      - posting
+    LocationEnum:
+      enum:
+      - tashkent_city
+      - tashkent_region
+      - andijan
+      - bukhara
+      - fergana
+      - jizzakh
+      - namangan
+      - navoiy
+      - kashkadarya
+      - samarkand
+      - sirdarya
+      - surkhandarya
+      - karakalpakstan
+      type: string
+      description: |-
+        * `tashkent_city` - Tashkent City
+        * `tashkent_region` - Tashkent Region
+        * `andijan` - Andijan
+        * `bukhara` - Bukhara
+        * `fergana` - Fergana
+        * `jizzakh` - Jizzakh
+        * `namangan` - Namangan
+        * `navoiy` - Navoiy
+        * `kashkadarya` - Kashkadarya
+        * `samarkand` - Samarkand
+        * `sirdarya` - Sirdarya
+        * `surkhandarya` - Surkhandarya
+        * `karakalpakstan` - Karakalpakstan
+    Message:
+      type: object
+      description: Serializer for Message
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        conversation:
+          type: integer
+        sender:
+          type: integer
+          readOnly: true
+        sender_name:
+          type: string
+          readOnly: true
+        content:
+          type: string
+        is_read:
+          type: boolean
+        is_own_message:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content
+      - conversation
+      - created_at
+      - id
+      - is_own_message
+      - sender
+      - sender_name
+    MessageRequest:
+      type: object
+      description: Serializer for Message
+      properties:
+        conversation:
+          type: integer
+        content:
+          type: string
+          minLength: 1
+        is_read:
+          type: boolean
+      required:
+      - content
+      - conversation
+    Notification:
+      type: object
+      description: Serializer for Notification
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        recipient:
+          type: integer
+          readOnly: true
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        title:
+          type: string
+          maxLength: 200
+        message:
+          type: string
+        related_object_id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        related_object_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/RelatedObjectTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - message
+      - notification_type
+      - recipient
+      - title
+    NotificationRequest:
+      type: object
+      description: Serializer for Notification
+      properties:
+        notification_type:
+          $ref: '#/components/schemas/NotificationTypeEnum'
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        message:
+          type: string
+          minLength: 1
+        related_object_id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        related_object_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/RelatedObjectTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        is_read:
+          type: boolean
+      required:
+      - message
+      - notification_type
+      - title
+    NotificationTypeEnum:
+      enum:
+      - new_message
+      - new_like
+      - new_invitation
+      type: string
+      description: |-
+        * `new_message` - New Message
+        * `new_like` - New Like
+        * `new_invitation` - New Invitation
+    NullEnum:
+      enum:
+      - null
+    PaginatedCandidateProfileList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CandidateProfile'
+    PaginatedCategoryList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    PaginatedConversationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Conversation'
+    PaginatedEmployerProfileList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployerProfile'
+    PaginatedInvitationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invitation'
+    PaginatedJobPostingListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobPostingList'
+    PaginatedLikeList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Like'
+    PaginatedMessageList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+    PaginatedNotificationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PatchedCandidateProfileRequest:
+      type: object
+      description: Serializer for Candidate Profile
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        surname:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        city:
+          $ref: '#/components/schemas/CityEnum'
+        profile_image:
+          type: string
+          format: binary
+          nullable: true
+        about_me:
+          type: string
+          nullable: true
+          maxLength: 1000
+        telegram_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        github_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        sphere:
+          type: string
+          nullable: true
+          maxLength: 200
+        availability_status:
+          $ref: '#/components/schemas/AvailabilityStatusEnum'
+    PatchedConversationRequest:
+      type: object
+      description: Serializer for Conversation
+      properties:
+        participant_one:
+          type: integer
+        participant_two:
+          type: integer
+    PatchedEmployerProfileRequest:
+      type: object
+      description: Serializer for Employer Profile
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        surname:
+          type: string
+          minLength: 1
+          maxLength: 100
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        location:
+          $ref: '#/components/schemas/LocationEnum'
+        company_name:
+          type: string
+          nullable: true
+          maxLength: 200
+        position:
+          type: string
+          nullable: true
+          maxLength: 100
+        profile_image:
+          type: string
+          format: binary
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        telegram_username:
+          type: string
+          nullable: true
+          maxLength: 100
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+    PatchedInvitationRequest:
+      type: object
+      description: Serializer for Invitation
+      properties:
+        message:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+    PatchedJobPostingCreateUpdateRequest:
+      type: object
+      description: Serializer for creating/updating Job Posting
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          minLength: 1
+        category:
+          type: integer
+        skills:
+          type: string
+          nullable: true
+        programming_languages:
+          type: string
+          nullable: true
+        spoken_languages:
+          type: string
+          nullable: true
+        years_of_experience:
+          type: integer
+          maximum: 50
+          minimum: 0
+          nullable: true
+        expected_salary:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+          description: Expected salary in USD per month
+        work_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/WorkTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        employment_type:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/EmploymentTypeEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        education:
+          type: string
+          nullable: true
+        certifications:
+          type: string
+          nullable: true
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        github_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        portfolio_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        resume_file:
+          type: string
+          format: binary
+          nullable: true
+        additional_details:
+          type: string
+          nullable: true
+        is_active:
+          type: boolean
+    PatchedLikeRequest:
+      type: object
+      description: Serializer for Like
+      properties:
+        posting:
+          type: integer
+    PatchedMessageRequest:
+      type: object
+      description: Serializer for Message
+      properties:
+        conversation:
+          type: integer
+        content:
+          type: string
+          minLength: 1
+        is_read:
+          type: boolean
+    RelatedObjectTypeEnum:
+      enum:
+      - message
+      - like
+      - invitation
+      type: string
+      description: |-
+        * `message` - Message
+        * `like` - Like
+        * `invitation` - Invitation
+    StatusEnum:
+      enum:
+      - pending
+      - accepted
+      - rejected
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `accepted` - Accepted
+        * `rejected` - Rejected
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    WorkTypeEnum:
+      enum:
+      - remote
+      - onsite
+      - hybrid
+      type: string
+      description: |-
+        * `remote` - Remote
+        * `onsite` - On-site
+        * `hybrid` - Hybrid
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
