@@ -1,4 +1,6 @@
-import Link from "@node_modules/next/link";
+"use client";
+
+import Link from "next/link";
 import { LoginForm } from "../components/auth/LoginForm";
 import { Navbar } from "../components/Navbar";
 

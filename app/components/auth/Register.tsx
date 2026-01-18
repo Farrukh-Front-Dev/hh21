@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
-import { useRegisterMutation } from "../../store/api/authApi";
+import { useRegisterMutation, useLoginMutation, useLazyGetMeQuery } from "../../store/api/authApi";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../../store/slices/authSlice";
 
 export function RegisterForm() {
   const [email, setEmail] = useState("");
@@ -9,13 +11,18 @@ export function RegisterForm() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [role, setRole] = useState<"candidate" | "employer">("candidate");
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const [register, { isLoading }] = useRegisterMutation();
+  const [register, { isLoading: isRegistering }] = useRegisterMutation();
+  const [login, { isLoading: isLoggingIn }] = useLoginMutation();
+  const [triggerGetMe] = useLazyGetMeQuery();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+  setError(null);
+  setFieldErrors({});
 
     if (password !== passwordConfirm) {
       setError("Passwords do not match");
@@ -23,19 +30,53 @@ export function RegisterForm() {
     }
 
     try {
-      await register({
+      const regRes = await register({
         email,
         password,
         password_confirm: passwordConfirm,
         role,
       }).unwrap();
 
-      // Muvaffaqiyatli registratsiyadan keyin login sahifaga yo'naltirish
-      router.push("/login");
+      // If backend returned tokens on register, auto-login. Otherwise show verify message and redirect to login.
+      if (regRes && (regRes.access || regRes.refresh)) {
+        try {
+          // If register returned tokens, use them
+          const access = regRes.access;
+          const refresh = regRes.refresh ?? "";
+          dispatch(setCredentials({ access, refresh, user: null }));
+
+          // fetch current user
+          try {
+            const me = await triggerGetMe().unwrap();
+            dispatch(setCredentials({ access, refresh, user: me }));
+            if (me.role === "candidate") router.push("/dashboard/candidate");
+            else if (me.role === "employer") router.push("/dashboard/employer");
+            else router.push("/dashboard");
+          } catch (e) {
+            router.push("/dashboard");
+          }
+        } catch (e) {
+          router.push("/login");
+        }
+      } else {
+        // No tokens returned: likely email verification flow. Show message and redirect to login.
+        setError("Registration successful — check your email for a verification link.");
+        setTimeout(() => router.push("/login"), 2500);
+      }
     } catch (err: any) {
-      // Backend xato javobini chiqarish
-      if (err?.data) setError(JSON.stringify(err.data));
-      else setError("Registration failed");
+      // Backend validation errors: set field-specific messages when possible
+      if (err?.data && typeof err.data === "object") {
+        const next: Record<string, string> = {};
+        Object.keys(err.data).forEach((k) => {
+          const v = err.data[k];
+          if (Array.isArray(v)) next[k] = v.join(" ");
+          else if (typeof v === "string") next[k] = v;
+          else next[k] = JSON.stringify(v);
+        });
+        setFieldErrors(next);
+      } else if (err?.data) {
+        setError(String(err.data));
+      } else setError("Registration failed");
     }
   };
 
@@ -49,6 +90,7 @@ export function RegisterForm() {
         className="border p-2 rounded"
         required
       />
+      {fieldErrors.email && <p className="text-red-600 text-sm">{fieldErrors.email}</p>}
       <input
         type="password"
         placeholder="Password"
@@ -57,6 +99,7 @@ export function RegisterForm() {
         className="border p-2 rounded"
         required
       />
+      {fieldErrors.password && <p className="text-red-600 text-sm">{fieldErrors.password}</p>}
       <input
         type="password"
         placeholder="Confirm Password"
@@ -65,23 +108,45 @@ export function RegisterForm() {
         className="border p-2 rounded"
         required
       />
-      <select
-        value={role}
-        onChange={(e) => setRole(e.target.value as "candidate" | "employer")}
-        className="border p-2 rounded"
-      >
-        <option value="candidate">Candidate</option>
-        <option value="employer">Employer</option>
-      </select>
+      {fieldErrors.password_confirm && (
+        <p className="text-red-600 text-sm">{fieldErrors.password_confirm}</p>
+      )}
+      <div>
+        <p className="text-sm mb-2">Ro'yxatdan o'tayotganingiz qanday?</p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            aria-pressed={role === "candidate"}
+            onClick={() => setRole("candidate")}
+            className={
+              "flex-1 border rounded p-3 text-center " +
+              (role === "candidate" ? "border-blue-500 bg-blue-50" : "border-gray-200")
+            }
+          >
+            Candidate
+          </button>
+          <button
+            type="button"
+            aria-pressed={role === "employer"}
+            onClick={() => setRole("employer")}
+            className={
+              "flex-1 border rounded p-3 text-center " +
+              (role === "employer" ? "border-blue-500 bg-blue-50" : "border-gray-200")
+            }
+          >
+            Employer
+          </button>
+        </div>
+      </div>
 
       {error && <p className="text-red-600 text-sm">{error}</p>}
-
+      <input type="hidden" name="role" value={role} />
       <button
         type="submit"
         className="bg-green-600 text-white p-2 rounded disabled:opacity-50"
-        disabled={isLoading}
+        disabled={isRegistering || isLoggingIn}
       >
-        {isLoading ? "Registering..." : "Register"}
+        {isRegistering || isLoggingIn ? "Processing..." : "Register"}
       </button>
     </form>
   );

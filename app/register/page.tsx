@@ -1,6 +1,8 @@
-import { RegisterForm } from "@app/components/auth/Register";
+"use client";
+
+import { RegisterForm } from "../components/auth/Register";
 import { Navbar } from "../components/Navbar";
-import Link from "@node_modules/next/link";
+import Link from "next/link";
 
 export default function RegisterPage() {
   return (
