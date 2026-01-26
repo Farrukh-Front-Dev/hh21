@@ -28,6 +28,12 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
   let result = await rawBaseQuery(args, api, extraOptions);
 
+  // 404 errors'lar uchun warning'lar suppress qilish (optional endpoints)
+  if (result.error && result.error.status === 404) {
+    // 404 silent'da handle qilish - bu optional endpoints
+    return result;
+  }
+
   if (result.error && result.error.status === 401) {
     // try to get a new token
     const refreshToken = (api.getState() as RootState).auth.refreshToken;

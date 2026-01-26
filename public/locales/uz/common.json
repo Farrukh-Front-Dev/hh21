@@ -1,0 +1,145 @@
+{
+  "navbar": {
+    "home": "Bosh sahifa",
+    "jobs": "Vakansiyalar",
+    "candidates": "Nomzodlar",
+    "dashboard": "Boshqaruv paneli",
+    "messages": "Xabarlar",
+    "notifications": "Bildirishnomalar",
+    "invitations": "Taklliflar",
+    "profile": "Profil",
+    "logout": "Chiqish",
+    "login": "Kirish",
+    "register": "Ro'yxatdan o'tish"
+  },
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik sodir bo'ldi",
+    "success": "Muvaffaqiyatli",
+    "cancel": "Bekor qilish",
+    "submit": "Yuborish",
+    "save": "Saqlash",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "close": "Yopish",
+    "search": "Qidirish",
+    "filter": "Filtr",
+    "sort": "Saralash"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Parol",
+    "confirmPassword": "Parolni tasdiqlash",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "username": "Foydalanuvchi nomi",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "rememberMe": "Meni eslab qol",
+    "signIn": "Kirish",
+    "signUp": "Ro'yxatdan o'tish",
+    "signOut": "Chiqish",
+    "haveAccount": "Accountingiz bormi?",
+    "noAccount": "Accountingiz yo'qmi?",
+    "emailVerification": "Email tekshiruvi",
+    "verifyEmail": "Emailni tasdiqlash"
+  },
+  "errors": {
+    "emailRequired": "Email majburiy",
+    "passwordRequired": "Parol majburiy",
+    "invalidEmail": "Noto'g'ri email",
+    "passwordMismatch": "Parollar mos kelmadi",
+    "userNotFound": "Foydalanuvchi topilmadi",
+    "unauthorized": "Ruxsat berilmadi"
+  },
+  "landing": {
+    "title": "School 21 Karyera Platformasi",
+    "subtitle": "Talantli nomzodlar va ish beruvchilarni bir joyda tutashtirish. O'z karyerasini rivojlantiring yoki mukammal jamoa topib qo'llanishingiz.",
+    "whyUs": "Nima uchun biz tanlanuvchi?",
+    "howItWorks": "Qanday Ishlaydi?",
+    "ready": "Hoziroq boshlashga tayyor?",
+    "readyDesc": "Siz nomzod yoki ish beruvchi bo'lingizdan qat'i nazar, HH21 platformasiga qo'shilish jarayoni oson va tez.",
+    "startToday": "Bugun Ro'yxatdan O'tish",
+    "features": {
+      "fast": {
+        "title": "Tez va Oson",
+        "desc": "Bir necha minutda akant yarating va ishni qidirishlashni boshlang. Oddiy va foydalanuvchi-do'st interfeys."
+      },
+      "jobs": {
+        "title": "Joydagi Ishlar",
+        "desc": "Jobasiz shaharnizdagi eng yaxshi ishlarni topib qo'llanishingiz. Yo shahar bo'ylab qidirish."
+      },
+      "trusted": {
+        "title": "Ishonchli",
+        "desc": "School 21 ta'lim markazi tomonidan qo'llab-quvvatlanadi. Xavfsiz va tekshirish qilingan platformada ishlasin."
+      }
+    },
+    "forCandidates": {
+      "title": "Nomzodlar uchun",
+      "step1": "Akant yarating yoki kirish qilsin",
+      "step1Desc": "Email va parolni kiriting yoki ro'yxatdan o'ting",
+      "step2": "Jobasiz postinglar yuboring",
+      "step2Desc": "Qaydlab berish xohchi botgan ishlar haqida posting qo'shing",
+      "step3": "Ish beruvchilardan taklif qabul qilsin",
+      "step3Desc": "Ish beruvchilar yoqtirilgan nomzodlarga taklif jo'natadi"
+    },
+    "forEmployers": {
+      "title": "Ish beruvchilar uchun",
+      "step1": "Kompaniya profilini yarating",
+      "step1Desc": "Kompaniya ma'lumotlarini to'ldiring va logo qo'shing",
+      "step2": "Nomzodlarni qidirish",
+      "step2Desc": "Tarafingiz kerak bo'lgan nomzodlarni qidiring",
+      "step3": "Taklif jo'natish",
+      "step3Desc": "Yoqtirilgan nomzodlarga ish taklifini jo'nating"
+    }
+  },
+  "jobs": {
+    "title": "Vakansiyalar",
+    "noJobs": "Vakansiyalar topilmadi",
+    "postJob": "Vakansiya joylashtirish",
+    "viewJob": "Vakansiyani ko'rish",
+    "applyNow": "Ariza berish",
+    "salary": "Maosh",
+    "location": "Joylashuv",
+    "companyName": "Kompaniya nomi",
+    "jobTitle": "Lavozim nomi",
+    "description": "Tavsifi",
+    "requirements": "Talablar"
+  },
+  "candidates": {
+    "title": "Nomzodlar",
+    "noCandidates": "Nomzodlar topilmadi",
+    "viewProfile": "Profilni ko'rish",
+    "sendInvitation": "Taklifni yuborish",
+    "hire": "Yollash",
+    "experience": "Tajriba",
+    "skills": "Ko'nikmalar"
+  },
+  "dashboard": {
+    "employerDashboard": "Ish beruvchi paneli",
+    "candidateDashboard": "Nomzod paneli",
+    "myJobs": "Mening vakansiyalarim",
+    "myApplications": "Mening arizalarim",
+    "statistics": "Statistika",
+    "recentActivity": "Oxirgi faoliyat"
+  },
+  "messages": {
+    "title": "Xabarlar",
+    "noMessages": "Xabarlar yo'q",
+    "sendMessage": "Xabar yuborish",
+    "type": "Yozing...",
+    "inbox": "Kirish qutisi",
+    "sent": "Yuborilan"
+  },
+  "notifications": {
+    "title": "Bildirishnomalar",
+    "noNotifications": "Bildirishnomalar yo'q",
+    "markAsRead": "O'qilgan deb belgilash",
+    "clearAll": "Hammasini o'chirish"
+  },
+  "invitations": {
+    "title": "Taklliflar",
+    "noInvitations": "Taklliflar yo'q",
+    "accept": "Qabul qilish",
+    "reject": "Rad etish"
+  }
+}
