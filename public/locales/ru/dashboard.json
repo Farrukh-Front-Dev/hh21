@@ -1,0 +1,50 @@
+{
+  "candidate": {
+    "greeting": "Привет",
+    "loginInfo": "Вы вошли с",
+    "stats": {
+      "totalPostings": "Всего вакансий",
+      "likedByMe": "Понравилось мне",
+      "pendingInvitations": "Ожидающие приглашения"
+    },
+    "profileCompletion": "Завершение профиля",
+    "profileCompletionDesc": "заполнено",
+    "quickLinks": {
+      "myPostings": "Мои вакансии",
+      "myPostingsDesc": "Просмотр и управление вашими вакансиями",
+      "likedJobs": "Понравившиеся работодатели",
+      "likedJobsDesc": "Просмотр понравившихся работодателей",
+      "invitations": "Приглашения",
+      "invitationsDesc": "Просмотр приглашений от работодателей",
+      "messages": "Сообщения",
+      "messagesDesc": "Общайтесь с работодателями"
+    },
+    "viewButton": "Просмотр"
+  },
+  "employer": {
+    "greeting": "Привет",
+    "loginInfo": "Вы вошли с",
+    "stats": {
+      "totalPostings": "Всего вакансий",
+      "likedCandidates": "Понравившиеся кандидаты",
+      "conversations": "Беседы"
+    },
+    "profileCompletion": "Завершение профиля",
+    "profileCompletionDesc": "заполнено",
+    "quickLinks": {
+      "createPosting": "Создать новую вакансию",
+      "createPostingDesc": "Создайте новую вакансию и найдите кандидатов",
+      "myPostings": "Мои вакансии",
+      "myPostingsDesc": "Управление вашими вакансиями",
+      "candidates": "Кандидаты",
+      "candidatesDesc": "Просмотр и поиск всех кандидатов",
+      "messages": "Сообщения",
+      "messagesDesc": "Общайтесь с кандидатами"
+    },
+    "viewButton": "Просмотр",
+    "addButton": "Добавить"
+  },
+  "errors": {
+    "loadingError": "Произошла ошибка"
+  }
+}

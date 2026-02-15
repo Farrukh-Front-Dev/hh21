@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { useConversations, useConversation, useSendMessage } from "@/app/hooks/useApi";
+import { useTranslation } from "react-i18next";
 
 export default function MessagesPage() {
   const [selectedConversationId, setSelectedConversationId] = useState<string>("");
   const [messageText, setMessageText] = useState("");
+  const { t } = useTranslation('messages');
 
   // Fetch conversations
   const { data: conversationsData, isLoading: conversationsLoading } =
@@ -41,18 +43,18 @@ export default function MessagesPage() {
         <div className="w-full md:w-1/3 bg-white border-r border-gray-200 flex flex-col">
           {/* Header */}
           <div className="p-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">Xabarlar</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('conversationsList.header')}</h1>
           </div>
 
           {/* Conversations */}
           <div className="flex-1 overflow-y-auto">
             {conversationsLoading ? (
               <div className="p-4 text-center text-gray-500">
-                Yuklanmoqda...
+                {t('conversationsList.loading')}
               </div>
             ) : conversations.length === 0 ? (
               <div className="p-4 text-center text-gray-500">
-                Suhbatlar yo&apos;q
+                {t('conversationsList.empty')}
               </div>
             ) : (
               conversations.map((conv) => (
@@ -69,7 +71,7 @@ export default function MessagesPage() {
                         {conv.participants.join(", ")}
                       </p>
                       <p className="text-sm text-gray-500 mt-1">
-                        {conv.last_message || "Hozircha xabar yo&apos;q"}
+                        {conv.last_message || t('conversationsList.noLastMessage')}
                       </p>
                     </div>
                     {conv.unread_count > 0 && (
@@ -92,7 +94,7 @@ export default function MessagesPage() {
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {conversationLoading ? (
                   <div className="text-center text-gray-500 py-10">
-                    Xabarlar yuklanmoqda...
+                    {t('chatArea.loading')}
                   </div>
                 ) : conversation?.messages ? (
                   conversation.messages.map((msg) => (
@@ -109,7 +111,7 @@ export default function MessagesPage() {
                   ))
                 ) : (
                   <div className="text-center text-gray-500 py-10">
-                    Xabar yo&apos;q
+                    {t('chatArea.empty')}
                   </div>
                 )}
               </div>
@@ -124,7 +126,7 @@ export default function MessagesPage() {
                     onKeyPress={(e) => {
                       if (e.key === "Enter") handleSendMessage();
                     }}
-                    placeholder="Xabar yozing..."
+                    placeholder={t('chatArea.placeholder')}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <button
@@ -132,14 +134,14 @@ export default function MessagesPage() {
                     disabled={messageSending || !messageText.trim()}
                     className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition disabled:opacity-50"
                   >
-                    Jo&apos;natish
+                    {t('chatArea.sendButton')}
                   </button>
                 </div>
               </div>
             </>
           ) : (
             <div className="flex items-center justify-center flex-1">
-              <p className="text-gray-500 text-lg">Suhbat tanlang</p>
+              <p className="text-gray-500 text-lg">{t('chatArea.selectConversation')}</p>
             </div>
           )}
         </div>

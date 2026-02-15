@@ -1,0 +1,12 @@
+{
+  "title": "Notifications",
+  "unreadCount": "unread messages",
+  "markAllAsRead": "Mark All as Read",
+  "empty": "No notifications",
+  "loading": "Loading...",
+  "markAsRead": "Mark as Read",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  }
+}

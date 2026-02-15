@@ -23,8 +23,6 @@ export const authApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-
-    // Fetch current authenticated user
     getMe: builder.query<any, void>({
       query: () => ({ url: "/auth/me/", method: "GET" }),
     }),

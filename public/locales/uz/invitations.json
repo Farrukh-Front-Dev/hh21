@@ -1,0 +1,25 @@
+{
+  "title": "Ish Takliflar",
+  "subtitle": "Ish beruvchilardan kelgan takliflar",
+  "filters": {
+    "all": "Barchasini",
+    "pending": "Kutilayotgan",
+    "accepted": "Qabul Qilingan",
+    "rejected": "Rad Etilgan"
+  },
+  "invitationCard": {
+    "posting": "Posting",
+    "employer": "Ish beruvchi",
+    "candidate": "Nomzod",
+    "status": "Status",
+    "statusPending": "Kutilayotgan",
+    "statusAccepted": "Qabul Qilingan",
+    "statusRejected": "Rad Etilgan"
+  },
+  "actions": {
+    "accept": "Qabul Qilish",
+    "reject": "Rad Etish"
+  },
+  "empty": "Takliflar yo'q",
+  "loading": "Yuklanmoqda..."
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Приглашения на работу",
+  "subtitle": "Приглашения от работодателей",
+  "filters": {
+    "all": "Все",
+    "pending": "Ожидающие",
+    "accepted": "Принятые",
+    "rejected": "Отклоненные"
+  },
+  "invitationCard": {
+    "posting": "Вакансия",
+    "employer": "Работодатель",
+    "candidate": "Кандидат",
+    "status": "Статус",
+    "statusPending": "Ожидающее",
+    "statusAccepted": "Принято",
+    "statusRejected": "Отклонено"
+  },
+  "actions": {
+    "accept": "Принять",
+    "reject": "Отклонить"
+  },
+  "empty": "Приглашений нет",
+  "loading": "Загрузка..."
+}

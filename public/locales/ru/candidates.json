@@ -1,0 +1,30 @@
+{
+  "title": "Кандидаты",
+  "totalCandidates": "кандидатов доступно",
+  "filters": {
+    "search": "Поиск...",
+    "experienceLevel": "Все уровни опыта",
+    "levels": {
+      "junior": "Младший",
+      "middle": "Средний",
+      "senior": "Старший"
+    }
+  },
+  "candidateCard": {
+    "experience": "Опыт",
+    "years": "лет",
+    "location": "Местоположение",
+    "education": "Образование",
+    "skills": "Навыки"
+  },
+  "actions": {
+    "sendInvitation": "Отправить приглашение",
+    "viewProfile": "Просмотреть профиль"
+  },
+  "empty": "Кандидаты не найдены",
+  "loading": "Загрузка...",
+  "pagination": {
+    "previous": "Предыдущая",
+    "next": "Следующая"
+  }
+}

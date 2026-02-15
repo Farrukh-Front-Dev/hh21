@@ -4,11 +4,13 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCurrentEmployer, useEmployerDashboard, useConversations } from "@/app/hooks/useApi";
 import { useAppSelector } from "@/app/store/hooks";
+import { useTranslation } from "react-i18next";
 
 export default function EmployerDashboardPage() {
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
   const [conversationCount, setConversationCount] = useState(0);
+  const { t } = useTranslation('dashboard');
 
   // Fetch employer data
   const {
@@ -51,7 +53,7 @@ export default function EmployerDashboardPage() {
   if (employerError) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-red-500 text-lg">Xatoka chiqdi</div>
+        <div className="text-red-500 text-lg">{t('errors.loadingError')}</div>
       </div>
     );
   }
@@ -62,10 +64,10 @@ export default function EmployerDashboardPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            Assalamu alaykum, {employer?.company_name || "Ish beruvchi"}
+            {t('employer.greeting')}, {employer?.company_name || "Ish beruvchi"}
           </h1>
           <p className="text-gray-600 mt-2">
-            Siz {employer?.email || ""} akaunti bilan kirgansiz
+            {t('employer.loginInfo')} {employer?.email || ""}
           </p>
         </div>
 
@@ -75,7 +77,7 @@ export default function EmployerDashboardPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Jami Postinglar</p>
+                <p className="text-gray-500 text-sm">{t('employer.stats.totalPostings')}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {stats?.postings_count || 0}
                 </p>
@@ -88,7 +90,7 @@ export default function EmployerDashboardPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Yoqtirilgan Nomzodlar</p>
+                <p className="text-gray-500 text-sm">{t('employer.stats.likedCandidates')}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {stats?.liked_candidates || 0}
                 </p>
@@ -101,7 +103,7 @@ export default function EmployerDashboardPage() {
           <div className="bg-white rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm">Suhbatlar</p>
+                <p className="text-gray-500 text-sm">{t('employer.stats.conversations')}</p>
                 <p className="text-3xl font-bold text-gray-900">
                   {conversationCount}
                 </p>
@@ -114,7 +116,7 @@ export default function EmployerDashboardPage() {
         {/* Profile Completion */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">
-            Profil To&apos;ldirilishi
+            {t('employer.profileCompletion')}
           </h2>
           <div className="w-full bg-gray-200 rounded-full h-4">
             <div
@@ -125,7 +127,7 @@ export default function EmployerDashboardPage() {
             ></div>
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            {stats?.profile_completion_percentage || 0}% to&apos;ldirilgan
+            {stats?.profile_completion_percentage || 0}% {t('employer.profileCompletionDesc')}
           </p>
         </div>
 
@@ -133,61 +135,61 @@ export default function EmployerDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Yangi Posting Qo&apos;shish
+              {t('employer.quickLinks.createPosting')}
             </h3>
             <p className="text-gray-600 mb-4">
-              Yangi ish postingi yarating va nomzodlarni qidiring
+              {t('employer.quickLinks.createPostingDesc')}
             </p>
             <a
               href="/postings/create"
               className="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              Qo&apos;shish
+              {t('employer.addButton')}
             </a>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Mening Postinglari
+              {t('employer.quickLinks.myPostings')}
             </h3>
             <p className="text-gray-600 mb-4">
-              Qo&apos;shgan postinglarni boshqarish
+              {t('employer.quickLinks.myPostingsDesc')}
             </p>
             <a
               href="/postings/my"
               className="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              Ko&apos;rish
+              {t('employer.viewButton')}
             </a>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Nomzodlar
+              {t('employer.quickLinks.candidates')}
             </h3>
             <p className="text-gray-600 mb-4">
-              Barcha nomzodlarni ko&apos;rish va qidirishish
+              {t('employer.quickLinks.candidatesDesc')}
             </p>
             <a
               href="/candidates"
               className="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              Ko&apos;rish
+              {t('employer.viewButton')}
             </a>
           </div>
 
           <div className="bg-white rounded-lg shadow p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Xabarlar
+              {t('employer.quickLinks.messages')}
             </h3>
             <p className="text-gray-600 mb-4">
-              Nomzodlar bilan suhbat qiling
+              {t('employer.quickLinks.messagesDesc')}
             </p>
             <a
               href="/messages"
               className="inline-block bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              Ko&apos;rish ({conversationCount})
+              {t('employer.viewButton')} ({conversationCount})
             </a>
           </div>
         </div>

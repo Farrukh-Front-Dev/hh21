@@ -1,0 +1,16 @@
+{
+  "title": "Xabarlar",
+  "conversationsList": {
+    "header": "Xabarlar",
+    "loading": "Yuklanmoqda...",
+    "empty": "Suhbatlar yo'q",
+    "noLastMessage": "Hozircha xabar yo'q"
+  },
+  "chatArea": {
+    "selectConversation": "Suhbat tanlang",
+    "loading": "Xabarlar yuklanmoqda...",
+    "empty": "Xabar yo'q",
+    "placeholder": "Xabar yozing...",
+    "sendButton": "Jo'natish"
+  }
+}

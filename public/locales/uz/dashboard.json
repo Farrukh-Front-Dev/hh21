@@ -1,0 +1,50 @@
+{
+  "candidate": {
+    "greeting": "Assalamu alaykum",
+    "loginInfo": "Siz akaunti bilan kirgansiz",
+    "stats": {
+      "totalPostings": "Jami Postinglar",
+      "likedByMe": "Menga Yoqtirilganlar",
+      "pendingInvitations": "Kutilayotgan Takliflar"
+    },
+    "profileCompletion": "Profil To'ldirilishi",
+    "profileCompletionDesc": "to'ldirilgan",
+    "quickLinks": {
+      "myPostings": "Mening Postinglari",
+      "myPostingsDesc": "O'z jobasiz postinglarni ko'rish va boshqarish",
+      "likedJobs": "Meni Yoqtirganlar",
+      "likedJobsDesc": "Siz yoqtirgan ish beruvchilarni ko'rish",
+      "invitations": "Takliflar",
+      "invitationsDesc": "Ish beruvchilardan kelgan takliflarni ko'rish",
+      "messages": "Xabarlar",
+      "messagesDesc": "Ish beruvchilar bilan suhbat qiling"
+    },
+    "viewButton": "Ko'rish"
+  },
+  "employer": {
+    "greeting": "Assalamu alaykum",
+    "loginInfo": "akaunti bilan kirgansiz",
+    "stats": {
+      "totalPostings": "Jami Postinglar",
+      "likedCandidates": "Yoqtirilgan Nomzodlar",
+      "conversations": "Suhbatlar"
+    },
+    "profileCompletion": "Profil To'ldirilishi",
+    "profileCompletionDesc": "to'ldirilgan",
+    "quickLinks": {
+      "createPosting": "Yangi Posting Qo'shish",
+      "createPostingDesc": "Yangi ish postingi yarating va nomzodlarni qidiring",
+      "myPostings": "Mening Postinglari",
+      "myPostingsDesc": "Qo'shgan postinglarni boshqarish",
+      "candidates": "Nomzodlar",
+      "candidatesDesc": "Barcha nomzodlarni ko'rish va qidirishish",
+      "messages": "Xabarlar",
+      "messagesDesc": "Nomzodlar bilan suhbat qiling"
+    },
+    "viewButton": "Ko'rish",
+    "addButton": "Qo'shish"
+  },
+  "errors": {
+    "loadingError": "Xatoka chiqdi"
+  }
+}

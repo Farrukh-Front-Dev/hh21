@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 import { useTranslation } from 'react-i18next';
+import SkillRadar from './SkillRoader';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -25,7 +26,7 @@ export default function LandingPage() {
   }, [accessToken, user, router]);
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white">
+    <div className="bg-linear-to-b from-blue-50 to-white">
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32">
         <div className="text-center">
@@ -53,6 +54,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      <SkillRadar />
 
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 py-20 sm:py-32 bg-white">
@@ -110,7 +112,7 @@ export default function LandingPage() {
             </h3>
             <ol className="space-y-4">
               <li className="flex items-start gap-4">
-                <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">
                   1
                 </span>
                 <div>
@@ -123,7 +125,7 @@ export default function LandingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-4">
-                <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">
                   2
                 </span>
                 <div>
@@ -136,7 +138,7 @@ export default function LandingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-4">
-                <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                <span className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">
                   3
                 </span>
                 <div>
@@ -158,7 +160,7 @@ export default function LandingPage() {
             </h3>
             <ol className="space-y-4">
               <li className="flex items-start gap-4">
-                <span className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                <span className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">
                   1
                 </span>
                 <div>
@@ -171,7 +173,7 @@ export default function LandingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-4">
-                <span className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                <span className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">
                   2
                 </span>
                 <div>
@@ -184,7 +186,7 @@ export default function LandingPage() {
                 </div>
               </li>
               <li className="flex items-start gap-4">
-                <span className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 font-bold">
+                <span className="bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center shrink-0 font-bold">
                   3
                 </span>
                 <div>

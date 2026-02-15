@@ -1,0 +1,50 @@
+{
+  "candidate": {
+    "greeting": "Hello",
+    "loginInfo": "You are logged in with",
+    "stats": {
+      "totalPostings": "Total Postings",
+      "likedByMe": "Liked By Me",
+      "pendingInvitations": "Pending Invitations"
+    },
+    "profileCompletion": "Profile Completion",
+    "profileCompletionDesc": "completed",
+    "quickLinks": {
+      "myPostings": "My Postings",
+      "myPostingsDesc": "View and manage your job postings",
+      "likedJobs": "Liked Jobs",
+      "likedJobsDesc": "View employers you liked",
+      "invitations": "Invitations",
+      "invitationsDesc": "View job invitations from employers",
+      "messages": "Messages",
+      "messagesDesc": "Chat with employers"
+    },
+    "viewButton": "View"
+  },
+  "employer": {
+    "greeting": "Hello",
+    "loginInfo": "You are logged in with",
+    "stats": {
+      "totalPostings": "Total Postings",
+      "likedCandidates": "Liked Candidates",
+      "conversations": "Conversations"
+    },
+    "profileCompletion": "Profile Completion",
+    "profileCompletionDesc": "completed",
+    "quickLinks": {
+      "createPosting": "Create New Posting",
+      "createPostingDesc": "Create a new job posting and find candidates",
+      "myPostings": "My Postings",
+      "myPostingsDesc": "Manage your job postings",
+      "candidates": "Candidates",
+      "candidatesDesc": "View and search all candidates",
+      "messages": "Messages",
+      "messagesDesc": "Chat with candidates"
+    },
+    "viewButton": "View",
+    "addButton": "Add"
+  },
+  "errors": {
+    "loadingError": "An error occurred"
+  }
+}

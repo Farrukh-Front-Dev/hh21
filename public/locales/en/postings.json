@@ -1,0 +1,31 @@
+{
+  "title": "Job Postings",
+  "totalPostings": "postings available",
+  "createButton": "+ Create New Posting",
+  "filters": {
+    "search": "Search...",
+    "category": "All Categories",
+    "status": "All Postings",
+    "statusOptions": {
+      "active": "Active",
+      "inactive": "Inactive"
+    }
+  },
+  "postingCard": {
+    "experience": "Experience",
+    "years": "years",
+    "location": "Location",
+    "salary": "Salary",
+    "views": "Views",
+    "likes": "Likes"
+  },
+  "actions": {
+    "viewDetails": "View Details"
+  },
+  "empty": "No postings found",
+  "loading": "Loading...",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  }
+}

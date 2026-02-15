@@ -1,0 +1,12 @@
+{
+  "title": "Bildirishnomalar",
+  "unreadCount": "ta o'qilmagan xabar",
+  "markAllAsRead": "Barchasini O'qilgan qilib Belgilash",
+  "empty": "Bildirishnomalar yo'q",
+  "loading": "Yuklanmoqda...",
+  "markAsRead": "O'qildi deb belgilash",
+  "pagination": {
+    "previous": "Oldingi",
+    "next": "Keyingi"
+  }
+}

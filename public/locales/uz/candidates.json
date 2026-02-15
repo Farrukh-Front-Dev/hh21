@@ -1,0 +1,30 @@
+{
+  "title": "Nomzodlar",
+  "totalCandidates": "ta nomzod mavjud",
+  "filters": {
+    "search": "Qidirish...",
+    "experienceLevel": "Barcha Tajriba Darajalari",
+    "levels": {
+      "junior": "Boshlang'ich",
+      "middle": "O'rta",
+      "senior": "Senior"
+    }
+  },
+  "candidateCard": {
+    "experience": "Tajriba",
+    "years": "yil",
+    "location": "Joylashuvi",
+    "education": "Ta'lim",
+    "skills": "Ko'nikmalar"
+  },
+  "actions": {
+    "sendInvitation": "Taklif Jo'natish",
+    "viewProfile": "Profil"
+  },
+  "empty": "Nomzodlar topilmadi",
+  "loading": "Yuklanmoqda...",
+  "pagination": {
+    "previous": "Oldingi",
+    "next": "Keyingi"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "title": "Candidates",
+  "totalCandidates": "candidates available",
+  "filters": {
+    "search": "Search...",
+    "experienceLevel": "All Experience Levels",
+    "levels": {
+      "junior": "Junior",
+      "middle": "Middle",
+      "senior": "Senior"
+    }
+  },
+  "candidateCard": {
+    "experience": "Experience",
+    "years": "years",
+    "location": "Location",
+    "education": "Education",
+    "skills": "Skills"
+  },
+  "actions": {
+    "sendInvitation": "Send Invitation",
+    "viewProfile": "View Profile"
+  },
+  "empty": "No candidates found",
+  "loading": "Loading...",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  }
+}

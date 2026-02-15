@@ -1,0 +1,31 @@
+{
+  "title": "Ish Postinglari",
+  "totalPostings": "ta posting mavjud",
+  "createButton": "+ Yangi Posting",
+  "filters": {
+    "search": "Qidirish...",
+    "category": "Barcha Kategoriyalar",
+    "status": "Barcha Postinglar",
+    "statusOptions": {
+      "active": "Aktiv",
+      "inactive": "Faol emas"
+    }
+  },
+  "postingCard": {
+    "experience": "Tajriba",
+    "years": "yil",
+    "location": "Joylashuvi",
+    "salary": "Maosh",
+    "views": "Ko'rishlar",
+    "likes": "Yoqtirilganlar"
+  },
+  "actions": {
+    "viewDetails": "Batafsil"
+  },
+  "empty": "Postinglar topilmadi",
+  "loading": "Yuklanmoqda...",
+  "pagination": {
+    "previous": "Oldingi",
+    "next": "Keyingi"
+  }
+}

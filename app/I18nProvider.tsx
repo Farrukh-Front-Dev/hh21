@@ -40,7 +40,7 @@ const initializeI18n = async () => {
         .init({
           lng: savedLanguage,
           fallbackLng: 'uz',
-          ns: ['common'],
+          ns: ['common', 'dashboard', 'candidates', 'postings', 'messages', 'notifications', 'invitations'],
           defaultNS: 'common',
           interpolation: {
             escapeValue: false,

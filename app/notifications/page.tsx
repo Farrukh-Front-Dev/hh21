@@ -7,9 +7,11 @@ import {
   useMarkAllNotificationsRead,
   useUnreadCount,
 } from "@/app/hooks/useApi";
+import { useTranslation } from "react-i18next";
 
 export default function NotificationsPage() {
   const [page, setPage] = useState(1);
+  const { t } = useTranslation('notifications');
 
   // Fetch notifications
   const { data: notificationsData, isLoading: notificationsLoading } =
@@ -46,10 +48,10 @@ export default function NotificationsPage() {
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              Bildirishnomalar
+              {t('title')}
             </h1>
             <p className="text-gray-600 mt-2">
-              {unreadData?.unread_count || 0} ta o&apos;qilmagan xabar
+              {unreadData?.unread_count || 0} {t('unreadCount')}
             </p>
           </div>
           {(unreadData?.unread_count || 0) > 0 && (
@@ -57,7 +59,7 @@ export default function NotificationsPage() {
               onClick={handleMarkAllRead}
               className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              Barchasini O&apos;qilgan qilib Belgilash
+              {t('markAllAsRead')}
             </button>
           )}
         </div>
@@ -70,7 +72,7 @@ export default function NotificationsPage() {
             </div>
           ) : notifications.length === 0 ? (
             <div className="bg-white rounded-lg shadow p-8 text-center">
-              <p className="text-gray-500 text-lg">Bildirishnomalar yo&apos;q</p>
+              <p className="text-gray-500 text-lg">{t('empty')}</p>
             </div>
           ) : (
             notifications.map((notification) => (
@@ -100,7 +102,7 @@ export default function NotificationsPage() {
                       onClick={() => handleMarkRead(notification.id)}
                       className="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition text-sm whitespace-nowrap"
                     >
-                      O&apos;qildi deb belgilash
+                      {t('markAsRead')}
                     </button>
                   )}
                 </div>
@@ -117,7 +119,7 @@ export default function NotificationsPage() {
               disabled={page === 1}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
             >
-              Oldingi
+              {t('pagination.previous')}
             </button>
             <span className="px-4 py-2">{page}</span>
             <button
@@ -127,7 +129,7 @@ export default function NotificationsPage() {
               }
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
             >
-              Keyingi
+              {t('pagination.next')}
             </button>
           </div>
         )}

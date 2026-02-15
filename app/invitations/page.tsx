@@ -6,9 +6,11 @@ import {
   useAcceptInvitation,
   useRejectInvitation,
 } from "@/app/hooks/useApi";
+import { useTranslation } from "react-i18next";
 
 export default function InvitationsPage() {
   const [filter, setFilter] = useState<string>("all");
+  const { t } = useTranslation('invitations');
 
   // Fetch invitations
   const { data: invitationsData, isLoading: invitationsLoading } = useInvitations({
@@ -45,9 +47,9 @@ export default function InvitationsPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Ish Takliflar</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-2">
-            Ish beruvchilardan kelgan takliflar
+            {t('subtitle')}
           </p>
         </div>
 
@@ -61,7 +63,7 @@ export default function InvitationsPage() {
                 : "bg-gray-100 text-gray-900 hover:bg-gray-200"
             }`}
           >
-            Barchasini ({invitationsData?.count || 0})
+            {t('filters.all')} ({invitationsData?.count || 0})
           </button>
           <button
             onClick={() => setFilter("pending")}
@@ -71,7 +73,7 @@ export default function InvitationsPage() {
                 : "bg-gray-100 text-gray-900 hover:bg-gray-200"
             }`}
           >
-            Kutilayotgan
+            {t('filters.pending')}
           </button>
           <button
             onClick={() => setFilter("accepted")}
@@ -81,7 +83,7 @@ export default function InvitationsPage() {
                 : "bg-gray-100 text-gray-900 hover:bg-gray-200"
             }`}
           >
-            Qabul Qilingan
+            {t('filters.accepted')}
           </button>
           <button
             onClick={() => setFilter("rejected")}
@@ -91,7 +93,7 @@ export default function InvitationsPage() {
                 : "bg-gray-100 text-gray-900 hover:bg-gray-200"
             }`}
           >
-            Rad Etilgan
+            {t('filters.rejected')}
           </button>
         </div>
 
@@ -103,7 +105,7 @@ export default function InvitationsPage() {
             </div>
           ) : invitations.length === 0 ? (
             <div className="bg-white rounded-lg shadow p-8 text-center">
-              <p className="text-gray-500 text-lg">Takliflar yo&apos;q</p>
+              <p className="text-gray-500 text-lg">{t('empty')}</p>
             </div>
           ) : (
             invitations.map((invitation) => (
@@ -120,18 +122,18 @@ export default function InvitationsPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-gray-900">
-                      Posting: {invitation.posting}
+                      {t('invitationCard.posting')}: {invitation.posting}
                     </h3>
                     <p className="text-gray-600 mt-2">
-                      Ish beruvchi: {invitation.employer}
+                      {t('invitationCard.employer')}: {invitation.employer}
                     </p>
                     <p className="text-gray-600">
-                      Nomzod: {invitation.candidate}
+                      {t('invitationCard.candidate')}: {invitation.candidate}
                     </p>
 
                     {/* Status Badge */}
                     <div className="mt-4 flex items-center gap-2">
-                      <span className="text-sm font-medium">Status:</span>
+                      <span className="text-sm font-medium">{t('invitationCard.status')}:</span>
                       <span
                         className={`px-3 py-1 rounded-full text-sm font-semibold ${
                           invitation.status === "pending"
@@ -142,10 +144,10 @@ export default function InvitationsPage() {
                         }`}
                       >
                         {invitation.status === "pending"
-                          ? "Kutilayotgan"
+                          ? t('invitationCard.statusPending')
                           : invitation.status === "accepted"
-                            ? "Qabul Qilingan"
-                            : "Rad Etilgan"}
+                            ? t('invitationCard.statusAccepted')
+                            : t('invitationCard.statusRejected')}
                       </span>
                     </div>
 
@@ -162,14 +164,14 @@ export default function InvitationsPage() {
                         disabled={acceptLoading}
                         className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition disabled:opacity-50 whitespace-nowrap"
                       >
-                        Qabul Qilish
+                        {t('actions.accept')}
                       </button>
                       <button
                         onClick={() => handleReject(invitation.id)}
                         disabled={rejectLoading}
                         className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition disabled:opacity-50 whitespace-nowrap"
                       >
-                        Rad Etish
+                        {t('actions.reject')}
                       </button>
                     </div>
                   )}

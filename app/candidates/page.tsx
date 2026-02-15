@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCandidates, useCreateInvitation } from "@/app/hooks/useApi";
 import { useAppSelector } from "@/app/store/hooks";
+import { useTranslation } from "react-i18next";
 
 export default function CandidatesPage() {
   const user = useAppSelector((state) => state.auth.user);
@@ -11,6 +12,7 @@ export default function CandidatesPage() {
     search: "",
     page: 1,
   });
+  const { t } = useTranslation('candidates');
 
   // Fetch candidates
   const { data: candidatesData, isLoading: candidatesLoading } = useCandidates(
@@ -35,9 +37,9 @@ export default function CandidatesPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Nomzodlar</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
           <p className="text-gray-600 mt-2">
-            {candidatesData?.count || 0} ta nomzod mavjud
+            {candidatesData?.count || 0} {t('totalCandidates')}
           </p>
         </div>
 
@@ -47,7 +49,7 @@ export default function CandidatesPage() {
             {/* Search */}
             <input
               type="text"
-              placeholder="Qidirish..."
+              placeholder={t('filters.search')}
               value={filters.search}
               onChange={(e) =>
                 setFilters({ ...filters, search: e.target.value, page: 1 })
@@ -59,10 +61,10 @@ export default function CandidatesPage() {
               defaultValue=""
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Barcha Tajriba Darajalari</option>
-              <option value="0">Boshlang&apos;ich</option>
-              <option value="1">O&apos;rta</option>
-              <option value="3">Senior</option>
+              <option value="">{t('filters.experienceLevel')}</option>
+              <option value="0">{t('filters.levels.junior')}</option>
+              <option value="1">{t('filters.levels.middle')}</option>
+              <option value="3">{t('filters.levels.senior')}</option>
             </select>
           </div>
         </div>
@@ -75,7 +77,7 @@ export default function CandidatesPage() {
             </div>
           ) : candidates.length === 0 ? (
             <div className="col-span-full text-center py-12">
-              <p className="text-gray-500 text-lg">Nomzodlar topilmadi</p>
+              <p className="text-gray-500 text-lg">{t('empty')}</p>
             </div>
           ) : (
             candidates.map((candidate) => (
@@ -106,25 +108,25 @@ export default function CandidatesPage() {
                 <div className="p-6 space-y-3 text-sm text-gray-600">
                   {candidate.experience_years && (
                     <div>
-                      <span className="font-semibold">Tajriba:</span>{" "}
-                      {candidate.experience_years}+ yil
+                      <span className="font-semibold">{t('candidateCard.experience')}:</span>{" "}
+                      {candidate.experience_years}+ {t('candidateCard.years')}
                     </div>
                   )}
                   {candidate.location && (
                     <div>
-                      <span className="font-semibold">Joylashuvi:</span>{" "}
+                      <span className="font-semibold">{t('candidateCard.location')}:</span>{" "}
                       {candidate.location}
                     </div>
                   )}
                   {candidate.education && (
                     <div>
-                      <span className="font-semibold">Ta&apos;lim:</span>{" "}
+                      <span className="font-semibold">{t('candidateCard.education')}:</span>{" "}
                       {candidate.education}
                     </div>
                   )}
                   {candidate.skills && candidate.skills.length > 0 && (
                     <div>
-                      <span className="font-semibold">Ko&apos;nikmalar:</span>
+                      <span className="font-semibold">{t('candidateCard.skills')}:</span>
                       <div className="flex flex-wrap gap-2 mt-2">
                         {candidate.skills.slice(0, 3).map((skill, idx) => (
                           <span
@@ -146,14 +148,14 @@ export default function CandidatesPage() {
                       onClick={() => handleInvite(candidate.id)}
                       className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
                     >
-                      Taklif Jo&apos;natish
+                      {t('actions.sendInvitation')}
                     </button>
                   ) : (
                     <Link
                       href={`/candidates/${candidate.id}`}
                       className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
                     >
-                      Profil
+                      {t('actions.viewProfile')}
                     </Link>
                   )}
                 </div>
@@ -170,14 +172,14 @@ export default function CandidatesPage() {
               disabled={filters.page === 1}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
             >
-              Oldingi
+              {t('pagination.previous')}
             </button>
             <span className="px-4 py-2">{filters.page}</span>
             <button
               onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
             >
-              Keyingi
+              {t('pagination.next')}
             </button>
           </div>
         )}

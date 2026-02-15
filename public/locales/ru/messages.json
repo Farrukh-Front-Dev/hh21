@@ -1,0 +1,16 @@
+{
+  "title": "Сообщения",
+  "conversationsList": {
+    "header": "Сообщения",
+    "loading": "Загрузка...",
+    "empty": "Нет бесед",
+    "noLastMessage": "Сообщений еще нет"
+  },
+  "chatArea": {
+    "selectConversation": "Выберите беседу",
+    "loading": "Загрузка сообщений...",
+    "empty": "Нет сообщений",
+    "placeholder": "Введите сообщение...",
+    "sendButton": "Отправить"
+  }
+}

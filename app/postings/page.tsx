@@ -9,6 +9,7 @@ import {
   useMyPostings,
 } from "@/app/hooks/useApi";
 import { useAppSelector } from "@/app/store/hooks";
+import { useTranslation } from "react-i18next";
 
 export default function PostingsPage() {
   const user = useAppSelector((state) => state.auth.user);
@@ -18,6 +19,7 @@ export default function PostingsPage() {
     page: 1,
   });
   const [liked, setLiked] = useState<Set<string>>(new Set());
+  const { t } = useTranslation('postings');
 
   // Fetch data
   const { data: postingsData, isLoading: postingsLoading } = usePostings(filters);
@@ -59,10 +61,10 @@ export default function PostingsPage() {
         <div className="mb-8 flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              Ish Postinglari
+              {t('title')}
             </h1>
             <p className="text-gray-600 mt-2">
-              {postingsData?.count || 0} ta posting mavjud
+              {postingsData?.count || 0} {t('totalPostings')}
             </p>
           </div>
           {user?.role === "candidate" && (
@@ -70,7 +72,7 @@ export default function PostingsPage() {
               href="/postings/create"
               className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
             >
-              + Yangi Posting
+              {t('createButton')}
             </Link>
           )}
         </div>
@@ -81,7 +83,7 @@ export default function PostingsPage() {
             {/* Search */}
             <input
               type="text"
-              placeholder="Qidirish..."
+              placeholder={t('filters.search')}
               value={filters.search}
               onChange={(e) =>
                 setFilters({ ...filters, search: e.target.value, page: 1 })
@@ -97,7 +99,7 @@ export default function PostingsPage() {
               }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Barcha Kategoriyalar</option>
+              <option value="">{t('filters.category')}</option>
               {(categoriesResponse || []).map((cat: any) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
@@ -116,9 +118,9 @@ export default function PostingsPage() {
               }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Barcha Postinglar</option>
-              <option value="true">Aktiv</option>
-              <option value="false">Faol emas</option>
+              <option value="">{t('filters.status')}</option>
+              <option value="true">{t('filters.statusOptions.active')}</option>
+              <option value="false">{t('filters.statusOptions.inactive')}</option>
             </select>
           </div>
         </div>
@@ -156,14 +158,14 @@ export default function PostingsPage() {
                 {/* Metadata */}
                 <div className="space-y-2 mb-4 text-sm text-gray-500">
                   {posting.required_experience && (
-                    <div>Tajriba: {posting.required_experience}+ yil</div>
+                    <div>{t('postingCard.experience')}: {posting.required_experience}+ {t('postingCard.years')}</div>
                   )}
                   {posting.location && (
-                    <div>Joylashuvi: {posting.location}</div>
+                    <div>{t('postingCard.location')}: {posting.location}</div>
                   )}
                   {posting.salary_min && posting.salary_max && (
                     <div>
-                      Maosh: ${posting.salary_min} - ${posting.salary_max}
+                      {t('postingCard.salary')}: ${posting.salary_min} - ${posting.salary_max}
                     </div>
                   )}
                 </div>
@@ -179,7 +181,7 @@ export default function PostingsPage() {
                   href={`/postings/${posting.id}`}
                   className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
                 >
-                  Batafsil
+                  {t('actions.viewDetails')}
                 </Link>
               </div>
             </div>
@@ -189,7 +191,7 @@ export default function PostingsPage() {
         {/* Empty State */}
         {postings.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">Postinglar topilmadi</p>
+            <p className="text-gray-500 text-lg">{t('empty')}</p>
           </div>
         )}
       </div>

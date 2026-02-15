@@ -1,0 +1,16 @@
+{
+  "title": "Messages",
+  "conversationsList": {
+    "header": "Messages",
+    "loading": "Loading...",
+    "empty": "No conversations",
+    "noLastMessage": "No messages yet"
+  },
+  "chatArea": {
+    "selectConversation": "Select a conversation",
+    "loading": "Loading messages...",
+    "empty": "No messages",
+    "placeholder": "Type a message...",
+    "sendButton": "Send"
+  }
+}
