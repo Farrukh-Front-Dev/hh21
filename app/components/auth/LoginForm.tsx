@@ -18,11 +18,11 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     console.log("=== LOGIN ATTEMPT ===");
     console.log("Email:", email);
     console.log("Timestamp:", new Date().toISOString());
-    
+
     try {
       console.log("Calling login mutation...");
       const res = await login({ email, password }).unwrap();
@@ -43,10 +43,10 @@ export function LoginForm() {
       if (res.user) {
         console.log("User role:", res.user.role);
         console.log("Redirecting based on role...");
-        
+
         // Small delay to ensure Redux state is updated before navigation
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         // redirect based on role using replace to avoid back button issues
         if (res.user.role === "candidate") {
           console.log("Redirecting to /dashboard/candidate");
@@ -65,7 +65,7 @@ export function LoginForm() {
         try {
           const me = await triggerGetMe().unwrap();
           console.log("User data from /me:", me);
-          
+
           // update store with user
           dispatch(
             setCredentials({ access: res.access, refresh: res.refresh, user: me })
@@ -95,7 +95,7 @@ export function LoginForm() {
       console.error("Error object:", e);
       console.error("Status:", e.status);
       console.error("Data:", e.data);
-      
+
       // More detailed error messages
       if (e.status === 401) {
         setError("Invalid email or password.");
@@ -126,7 +126,7 @@ export function LoginForm() {
           required
         />
       </div>
-      
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Password
@@ -140,7 +140,7 @@ export function LoginForm() {
           required
         />
       </div>
-      
+
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
           {error}
