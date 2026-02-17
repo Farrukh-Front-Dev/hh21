@@ -1,22 +1,23 @@
 import { baseApi } from "./baseApi";
 
 export interface Like {
-  id: string;
-  user: string;
-  posting: string;
+  id: number;
+  employer: number;
+  posting: number;
+  posting_title: string;
+  candidate_name: string;
   created_at: string;
 }
 
 export interface ListLikesParams {
   page?: number;
-  page_size?: number;
 }
 
 export const likeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     listLikes: builder.query<
-      { results: Like[]; count: number; next?: string; previous?: string },
-      ListLikesParams
+      { results: Like[]; count: number; next?: string | null; previous?: string | null },
+      ListLikesParams | void
     >({
       query: (params) => ({
         url: "/likes/",
@@ -24,14 +25,48 @@ export const likeApi = baseApi.injectEndpoints({
       }),
     }),
 
-    toggleLike: builder.mutation<Like | { success: boolean }, string>({
-      query: (posting_id) => ({
-        url: `/likes/toggle/`,
+    getLike: builder.query<Like, number>({
+      query: (id) => `/likes/${id}/`,
+    }),
+
+    createLike: builder.mutation<Like, { posting: number }>({
+      query: (body) => ({
+        url: "/likes/",
         method: "POST",
-        body: { posting_id },
+        body,
+      }),
+    }),
+
+    toggleLike: builder.mutation<Like, { posting: number }>({
+      query: (body) => ({
+        url: "/likes/toggle/",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    updateLike: builder.mutation<Like, { id: number; body: { posting: number } }>({
+      query: ({ id, body }) => ({
+        url: `/likes/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+
+    deleteLike: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/likes/${id}/`,
+        method: "DELETE",
       }),
     }),
   }),
 });
 
-export const { useListLikesQuery, useToggleLikeMutation } = likeApi;
+export const {
+  useListLikesQuery,
+  useGetLikeQuery,
+  useCreateLikeMutation,
+  useToggleLikeMutation,
+  useUpdateLikeMutation,
+  useDeleteLikeMutation,
+} = likeApi;

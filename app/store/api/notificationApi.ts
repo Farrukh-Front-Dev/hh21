@@ -1,12 +1,16 @@
 import { baseApi } from "./baseApi";
 
+export type NotificationTypeEnum = "new_message" | "new_like" | "new_invitation";
+export type RelatedObjectTypeEnum = "message" | "like" | "invitation";
+
 export interface Notification {
-  id: string;
-  user: string;
-  type: string;
+  id: number;
+  recipient: number;
+  notification_type: NotificationTypeEnum;
   title: string;
   message: string;
-  related_id?: string;
+  related_object_id?: number | null;
+  related_object_type?: RelatedObjectTypeEnum | null;
   is_read: boolean;
   created_at: string;
 }
@@ -17,7 +21,6 @@ export interface UnreadCount {
 
 export interface ListNotificationsParams {
   page?: number;
-  page_size?: number;
   is_read?: boolean;
 }
 
@@ -27,10 +30,10 @@ export const notificationApi = baseApi.injectEndpoints({
       {
         results: Notification[];
         count: number;
-        next?: string;
-        previous?: string;
+        next?: string | null;
+        previous?: string | null;
       },
-      ListNotificationsParams
+      ListNotificationsParams | void
     >({
       query: (params) => ({
         url: "/notifications/",
@@ -38,28 +41,35 @@ export const notificationApi = baseApi.injectEndpoints({
       }),
     }),
 
-    markNotificationRead: builder.mutation<Notification, string>({
+    getNotification: builder.query<Notification, number>({
+      query: (id) => `/notifications/${id}/`,
+    }),
+
+    markNotificationRead: builder.mutation<Notification, number>({
       query: (id) => ({
-        url: `/notifications/${id}/mark-read/`,
+        url: `/notifications/${id}/mark_read/`,
         method: "POST",
+        body: {},
       }),
     }),
 
     markAllNotificationsRead: builder.mutation<void, void>({
       query: () => ({
-        url: "/notifications/mark-all-read/",
+        url: "/notifications/mark_all_read/",
         method: "POST",
+        body: {},
       }),
     }),
 
     getUnreadCount: builder.query<UnreadCount, void>({
-      query: () => "/notifications/unread-count/",
+      query: () => "/notifications/unread_count/",
     }),
   }),
 });
 
 export const {
   useListNotificationsQuery,
+  useGetNotificationQuery,
   useMarkNotificationReadMutation,
   useMarkAllNotificationsReadMutation,
   useGetUnreadCountQuery,

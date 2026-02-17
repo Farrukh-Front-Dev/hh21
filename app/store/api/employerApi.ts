@@ -1,44 +1,56 @@
 import { baseApi } from "./baseApi";
 
-export interface Employer {
-  id: string;
-  user: string;
-  company_name: string;
-  email: string;
-  phone?: string;
-  logo?: string;
-  description?: string;
-  website?: string;
-  industry?: string;
-  location?: string;
-  company_size?: string;
-  is_complete: boolean;
+export type LocationEnum =
+  | "tashkent_city"
+  | "tashkent_region"
+  | "andijan"
+  | "bukhara"
+  | "fergana"
+  | "jizzakh"
+  | "namangan"
+  | "navoiy"
+  | "kashkadarya"
+  | "samarkand"
+  | "sirdarya"
+  | "surkhandarya"
+  | "karakalpakstan";
+
+export interface EmployerProfile {
+  id: number;
+  user: number;
+  user_email: string;
+  name: string;
+  surname: string;
+  phone: string;
+  location: LocationEnum;
+  company_name?: string | null;
+  position?: string | null;
+  profile_image?: string | null;
+  description?: string | null;
+  telegram_username?: string | null;
+  linkedin_url?: string | null;
   created_at: string;
   updated_at: string;
 }
 
 export interface EmployerDashboard {
-  postings_count: number;
-  liked_candidates: number;
-  recent_conversations: number;
-  top_candidates: any[];
+  likes_count: number;
+  invitations_sent: number;
+  active_conversations: number;
+  recent_likes: any[];
   profile_completion_percentage: number;
 }
 
 export interface ListEmployersParams {
   page?: number;
-  page_size?: number;
-  search?: string;
-  industry?: string;
-  location?: string;
 }
 
 export const employerApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     listEmployers: builder.query<
-      { results: Employer[]; count: number; next?: string; previous?: string },
-      ListEmployersParams
+      { results: EmployerProfile[]; count: number; next?: string | null; previous?: string | null },
+      ListEmployersParams | void
     >({
       query: (params) => ({
         url: "/employers/",
@@ -46,33 +58,34 @@ export const employerApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getEmployer: builder.query<Employer, string>({
+    getEmployer: builder.query<EmployerProfile, number>({
       query: (id) => `/employers/${id}/`,
     }),
 
-    getCurrentEmployer: builder.query<Employer, void>({
+    getCurrentEmployer: builder.query<EmployerProfile, void>({
       query: () => "/employers/me/",
     }),
 
-    completeProfile: builder.mutation<
-      Employer,
-      Partial<Employer>
-    >({
+    completeProfile: builder.mutation<EmployerProfile, FormData | Partial<EmployerProfile>>({
       query: (body) => ({
-        url: "/employers/me/",
+        url: "/employers/complete/",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    updateEmployer: builder.mutation<EmployerProfile, { id: number; body: FormData | Partial<EmployerProfile> }>({
+      query: ({ id, body }) => ({
+        url: `/employers/${id}/`,
         method: "PATCH",
         body,
       }),
     }),
 
-    updateEmployer: builder.mutation<
-      Employer,
-      { id: string; body: Partial<Employer> }
-    >({
-      query: ({ id, body }) => ({
+    deleteEmployer: builder.mutation<void, number>({
+      query: (id) => ({
         url: `/employers/${id}/`,
-        method: "PATCH",
-        body,
+        method: "DELETE",
       }),
     }),
 
@@ -88,5 +101,6 @@ export const {
   useGetCurrentEmployerQuery,
   useCompleteProfileMutation: useCompleteEmployerProfileMutation,
   useUpdateEmployerMutation,
+  useDeleteEmployerMutation,
   useGetDashboardQuery: useGetEmployerDashboardQuery,
 } = employerApi;

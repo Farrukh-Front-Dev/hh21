@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../index";
 import { setCredentials, logout } from "../slices/authSlice";
 
-const baseUrl = "http://89.236.218.90/api";
+const baseUrl = "http://77.42.75.94/django/api";
 
 // Standard fetchBaseQuery used to make requests
 const rawBaseQuery = fetchBaseQuery({

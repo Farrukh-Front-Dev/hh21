@@ -2,33 +2,38 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useCandidates, useCreateInvitation } from "@/app/hooks/useApi";
 import { useAppSelector } from "@/app/store/hooks";
 import { useTranslation } from "react-i18next";
+import { useListCandidatesQuery, useCreateInvitationMutation } from "@/app/store/api";
 
 export default function CandidatesPage() {
   const user = useAppSelector((state) => state.auth.user);
-  const [filters, setFilters] = useState({
-    search: "",
-    page: 1,
-  });
-  const { t } = useTranslation('candidates');
+  const [page, setPage] = useState(1);
+  const { t } = useTranslation("candidates");
 
-  // Fetch candidates
-  const { data: candidatesData, isLoading: candidatesLoading } = useCandidates(
-    filters
-  );
+  const { data: candidatesData, isLoading } = useListCandidatesQuery({ page });
+  const [createInvitation] = useCreateInvitationMutation();
 
-  const [createInvitation] = useCreateInvitation();
-
-  const handleInvite = async (candidateId: string) => {
-    // This would need posting ID - simplified for now
+  const handleInvite = async (candidateId: number) => {
+    if (user?.role !== "employer") return;
     try {
-      console.log("Inviting:", candidateId);
+      const message = prompt("Enter invitation message:");
+      if (!message) return;
+      await createInvitation({ candidate: candidateId, message }).unwrap();
+      alert("Invitation sent successfully!");
     } catch (error) {
-      console.error("Xatoka chiqdi:", error);
+      console.error("Error sending invitation:", error);
+      alert("Failed to send invitation");
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   const candidates = candidatesData?.results || [];
 
@@ -37,149 +42,143 @@ export default function CandidatesPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">{t('title')}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t("title")}</h1>
           <p className="text-gray-600 mt-2">
-            {candidatesData?.count || 0} {t('totalCandidates')}
+            {candidatesData?.count || 0} {t("totalCandidates")}
           </p>
-        </div>
-
-        {/* Filters */}
-        <div className="bg-white rounded-lg shadow p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Search */}
-            <input
-              type="text"
-              placeholder={t('filters.search')}
-              value={filters.search}
-              onChange={(e) =>
-                setFilters({ ...filters, search: e.target.value, page: 1 })
-              }
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-
-            <select
-              defaultValue=""
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">{t('filters.experienceLevel')}</option>
-              <option value="0">{t('filters.levels.junior')}</option>
-              <option value="1">{t('filters.levels.middle')}</option>
-              <option value="3">{t('filters.levels.senior')}</option>
-            </select>
-          </div>
         </div>
 
         {/* Candidates Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {candidatesLoading ? (
-            <div className="col-span-full text-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-            </div>
-          ) : candidates.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <p className="text-gray-500 text-lg">{t('empty')}</p>
-            </div>
-          ) : (
-            candidates.map((candidate) => (
-              <div
-                key={candidate.id}
-                className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
-              >
-                {/* Header */}
-                <div className="p-6 border-b border-gray-200">
-                  {candidate.photo && (
-                    <div className="mb-4">
-                      <img
-                        src={candidate.photo}
-                        alt={candidate.full_name}
-                        className="w-20 h-20 rounded-full mx-auto"
-                      />
-                    </div>
-                  )}
-                  <h3 className="text-lg font-semibold text-gray-900 text-center">
-                    {candidate.full_name}
-                  </h3>
-                  <p className="text-gray-600 text-center text-sm mt-1">
-                    {candidate.email}
+          {candidates.map((candidate) => (
+            <div
+              key={candidate.id}
+              className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden"
+            >
+              <div className="p-6">
+                {/* Profile Image */}
+                {candidate.profile_image && (
+                  <img
+                    src={candidate.profile_image}
+                    alt={`${candidate.name} ${candidate.surname}`}
+                    className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+                  />
+                )}
+
+                {/* Name */}
+                <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                  {candidate.name} {candidate.surname}
+                </h3>
+
+                {/* Email */}
+                <p className="text-sm text-gray-600 text-center mb-2">
+                  {candidate.user_email}
+                </p>
+
+                {/* City */}
+                <div className="text-sm text-gray-500 text-center mb-2">
+                  📍 {candidate.city.replace(/_/g, " ")}
+                </div>
+
+                {/* Sphere */}
+                {candidate.sphere && (
+                  <div className="text-sm text-blue-600 text-center mb-2">
+                    {candidate.sphere}
+                  </div>
+                )}
+
+                {/* Availability Status */}
+                <div className="text-center mb-4">
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-xs ${
+                      candidate.availability_status === "actively_looking"
+                        ? "bg-green-100 text-green-800"
+                        : candidate.availability_status === "open_to_offers"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {candidate.availability_status.replace(/_/g, " ")}
+                  </span>
+                </div>
+
+                {/* About Me */}
+                {candidate.about_me && (
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+                    {candidate.about_me}
                   </p>
-                </div>
+                )}
 
-                {/* Info */}
-                <div className="p-6 space-y-3 text-sm text-gray-600">
-                  {candidate.experience_years && (
-                    <div>
-                      <span className="font-semibold">{t('candidateCard.experience')}:</span>{" "}
-                      {candidate.experience_years}+ {t('candidateCard.years')}
-                    </div>
+                {/* Social Links */}
+                <div className="flex justify-center gap-3 mb-4">
+                  {candidate.telegram_username && (
+                    <a
+                      href={`https://t.me/${candidate.telegram_username}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-600 text-sm"
+                    >
+                      Telegram
+                    </a>
                   )}
-                  {candidate.location && (
-                    <div>
-                      <span className="font-semibold">{t('candidateCard.location')}:</span>{" "}
-                      {candidate.location}
-                    </div>
-                  )}
-                  {candidate.education && (
-                    <div>
-                      <span className="font-semibold">{t('candidateCard.education')}:</span>{" "}
-                      {candidate.education}
-                    </div>
-                  )}
-                  {candidate.skills && candidate.skills.length > 0 && (
-                    <div>
-                      <span className="font-semibold">{t('candidateCard.skills')}:</span>
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {candidate.skills.slice(0, 3).map((skill, idx) => (
-                          <span
-                            key={idx}
-                            className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+                  {candidate.github_username && (
+                    <a
+                      href={`https://github.com/${candidate.github_username}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-700 hover:text-gray-900 text-sm"
+                    >
+                      GitHub
+                    </a>
                   )}
                 </div>
 
-                {/* Action Button */}
-                <div className="p-6 border-t border-gray-200">
-                  {user?.role === "employer" ? (
+                {/* Action Buttons */}
+                <div className="space-y-2">
+                  <Link
+                    href={`/candidates/${candidate.id}`}
+                    className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                  >
+                    {t("actions.viewProfile")}
+                  </Link>
+                  {user?.role === "employer" && (
                     <button
                       onClick={() => handleInvite(candidate.id)}
-                      className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                      className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
                     >
-                      {t('actions.sendInvitation')}
+                      {t("actions.sendInvitation")}
                     </button>
-                  ) : (
-                    <Link
-                      href={`/candidates/${candidate.id}`}
-                      className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-                    >
-                      {t('actions.viewProfile')}
-                    </Link>
                   )}
                 </div>
               </div>
-            ))
-          )}
+            </div>
+          ))}
         </div>
 
+        {/* Empty State */}
+        {candidates.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">{t("empty")}</p>
+          </div>
+        )}
+
         {/* Pagination */}
-        {candidatesData?.count && candidatesData.count > 20 && (
-          <div className="flex gap-4 mt-8 justify-center">
+        {candidatesData && (candidatesData.next || candidatesData.previous) && (
+          <div className="mt-8 flex justify-center gap-4">
             <button
-              onClick={() => setFilters({ ...filters, page: filters.page - 1 })}
-              disabled={filters.page === 1}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
+              onClick={() => setPage(page - 1)}
+              disabled={!candidatesData.previous}
+              className="px-4 py-2 bg-white border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              {t('pagination.previous')}
+              {t("pagination.previous")}
             </button>
-            <span className="px-4 py-2">{filters.page}</span>
+            <span className="px-4 py-2">Page {page}</span>
             <button
-              onClick={() => setFilters({ ...filters, page: filters.page + 1 })}
-              className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+              onClick={() => setPage(page + 1)}
+              disabled={!candidatesData.next}
+              className="px-4 py-2 bg-white border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
             >
-              {t('pagination.next')}
+              {t("pagination.next")}
             </button>
           </div>
         )}

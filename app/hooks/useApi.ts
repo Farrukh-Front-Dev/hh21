@@ -75,7 +75,7 @@ export const useCurrentCandidate = () => useGetCurrentCandidateQuery();
 export const useCandidates = (params?: any) =>
   useListCandidatesQuery(params || {});
 
-export const useCandidate = (id: string) => useGetCandidateQuery(id);
+export const useCandidate = (id: number) => useGetCandidateQuery(id);
 
 export const useCompleteCandidateProfile = () =>
   useCompleteProfileMutation();
@@ -91,7 +91,7 @@ export const useCurrentEmployer = () => useGetCurrentEmployerQuery();
 export const useEmployers = (params?: any) =>
   useListEmployersQuery(params || {});
 
-export const useEmployer = (id: string) => useGetEmployerQuery(id);
+export const useEmployer = (id: number) => useGetEmployerQuery(id);
 
 export const useCompleteEmployerProfile = () =>
   useCompleteEmployerProfileMutation();
@@ -105,7 +105,7 @@ export const useEmployerDashboard = () => useGetEmployerDashboardQuery();
 export const usePostings = (params?: any) =>
   useListPostingsQuery(params || {});
 
-export const usePosting = (id: string) => useGetPostingQuery(id);
+export const usePosting = (id: number) => useGetPostingQuery(id);
 
 export const useCreatePosting = () => useCreatePostingMutation();
 
@@ -113,8 +113,7 @@ export const useUpdatePosting = () => useUpdatePostingMutation();
 
 export const useDeletePosting = () => useDeletePostingMutation();
 
-export const useMyPostings = (params?: any) =>
-  useGetMyPostingsQuery(params || {});
+export const useMyPostings = () => useGetMyPostingsQuery();
 
 export const useTogglePostingStatus = () => useTogglePostingStatusMutation();
 
@@ -123,13 +122,13 @@ export const useTogglePostingStatus = () => useTogglePostingStatusMutation();
 export const useConversations = (params?: any) =>
   useListConversationsQuery(params || {});
 
-export const useConversation = (id: string) =>
+export const useConversation = (id: number) =>
   useGetConversationQuery(id);
 
 export const useStartConversation = () => useStartConversationMutation();
 
-export const useMessages = (conversationId: string, params?: any) =>
-  useListMessagesQuery({ conversationId, params: params || {} });
+export const useMessages = (params?: any) =>
+  useListMessagesQuery(params || {});
 
 export const useSendMessage = () => useSendMessageMutation();
 

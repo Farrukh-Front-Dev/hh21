@@ -1,19 +1,26 @@
 import { baseApi } from "./baseApi";
 
+export type InvitationStatus = "pending" | "accepted" | "rejected";
+
 export interface Invitation {
-  id: string;
-  posting: string;
-  employer: string;
-  candidate: string;
-  status: "pending" | "accepted" | "rejected";
+  id: number;
+  employer: number;
+  employer_company: string;
+  candidate: number;
+  candidate_name: string;
+  message: string;
+  status: InvitationStatus;
   created_at: string;
   updated_at: string;
 }
 
+export interface InvitationCreate {
+  candidate: number;
+  message: string;
+}
+
 export interface ListInvitationsParams {
   page?: number;
-  page_size?: number;
-  status?: string;
 }
 
 export const invitationApi = baseApi.injectEndpoints({
@@ -22,10 +29,10 @@ export const invitationApi = baseApi.injectEndpoints({
       {
         results: Invitation[];
         count: number;
-        next?: string;
-        previous?: string;
+        next?: string | null;
+        previous?: string | null;
       },
-      ListInvitationsParams
+      ListInvitationsParams | void
     >({
       query: (params) => ({
         url: "/invitations/",
@@ -33,10 +40,11 @@ export const invitationApi = baseApi.injectEndpoints({
       }),
     }),
 
-    createInvitation: builder.mutation<
-      Invitation,
-      { posting_id: string; candidate_id: string }
-    >({
+    getInvitation: builder.query<Invitation, number>({
+      query: (id) => `/invitations/${id}/`,
+    }),
+
+    createInvitation: builder.mutation<Invitation, InvitationCreate>({
       query: (body) => ({
         url: "/invitations/",
         method: "POST",
@@ -44,33 +52,50 @@ export const invitationApi = baseApi.injectEndpoints({
       }),
     }),
 
-    acceptInvitation: builder.mutation<Invitation, string>({
+    acceptInvitation: builder.mutation<Invitation, number>({
       query: (id) => ({
         url: `/invitations/${id}/accept/`,
         method: "POST",
+        body: {},
       }),
     }),
 
-    rejectInvitation: builder.mutation<Invitation, string>({
+    rejectInvitation: builder.mutation<Invitation, number>({
       query: (id) => ({
         url: `/invitations/${id}/reject/`,
         method: "POST",
+        body: {},
       }),
     }),
 
-    getPendingInvitations: builder.query<
-      { results: Invitation[]; count: number },
-      void
-    >({
+    getPendingInvitations: builder.query<Invitation, void>({
       query: () => "/invitations/pending/",
+    }),
+
+    updateInvitation: builder.mutation<Invitation, { id: number; body: Partial<Invitation> }>({
+      query: ({ id, body }) => ({
+        url: `/invitations/${id}/`,
+        method: "PATCH",
+        body,
+      }),
+    }),
+
+    deleteInvitation: builder.mutation<void, number>({
+      query: (id) => ({
+        url: `/invitations/${id}/`,
+        method: "DELETE",
+      }),
     }),
   }),
 });
 
 export const {
   useListInvitationsQuery,
+  useGetInvitationQuery,
   useCreateInvitationMutation,
   useAcceptInvitationMutation,
   useRejectInvitationMutation,
   useGetPendingInvitationsQuery,
+  useUpdateInvitationMutation,
+  useDeleteInvitationMutation,
 } = invitationApi;

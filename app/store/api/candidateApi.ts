@@ -1,18 +1,39 @@
 import { baseApi } from "./baseApi";
 
-export interface Candidate {
-  id: string;
-  user: string;
-  full_name: string;
-  email: string;
-  phone?: string;
-  photo?: string;
-  bio?: string;
-  experience_years?: number;
-  skills?: string[];
-  education?: string;
-  location?: string;
-  is_complete: boolean;
+export type CityEnum =
+  | "tashkent_city"
+  | "tashkent_region"
+  | "andijan"
+  | "bukhara"
+  | "fergana"
+  | "jizzakh"
+  | "namangan"
+  | "navoiy"
+  | "kashkadarya"
+  | "samarkand"
+  | "sirdarya"
+  | "surkhandarya"
+  | "karakalpakstan";
+
+export type AvailabilityStatusEnum =
+  | "actively_looking"
+  | "open_to_offers"
+  | "not_available";
+
+export interface CandidateProfile {
+  id: number;
+  user: number;
+  user_email: string;
+  name: string;
+  surname: string;
+  phone: string;
+  city: CityEnum;
+  profile_image?: string | null;
+  about_me?: string | null;
+  telegram_username?: string | null;
+  github_username?: string | null;
+  sphere?: string | null;
+  availability_status: AvailabilityStatusEnum;
   created_at: string;
   updated_at: string;
 }
@@ -27,18 +48,14 @@ export interface CandidateDashboard {
 
 export interface ListCandidatesParams {
   page?: number;
-  page_size?: number;
-  search?: string;
-  experience_min?: number;
-  location?: string;
 }
 
 export const candidateApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     listCandidates: builder.query<
-      { results: Candidate[]; count: number; next?: string; previous?: string },
-      ListCandidatesParams
+      { results: CandidateProfile[]; count: number; next?: string | null; previous?: string | null },
+      ListCandidatesParams | void
     >({
       query: (params) => ({
         url: "/candidates/",
@@ -46,33 +63,34 @@ export const candidateApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getCandidate: builder.query<Candidate, string>({
+    getCandidate: builder.query<CandidateProfile, number>({
       query: (id) => `/candidates/${id}/`,
     }),
 
-    getCurrentCandidate: builder.query<Candidate, void>({
+    getCurrentCandidate: builder.query<CandidateProfile, void>({
       query: () => "/candidates/me/",
     }),
 
-    completeProfile: builder.mutation<
-      Candidate,
-      Partial<Candidate>
-    >({
+    completeProfile: builder.mutation<CandidateProfile, FormData | Partial<CandidateProfile>>({
       query: (body) => ({
-        url: "/candidates/me/",
+        url: "/candidates/complete/",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    updateCandidate: builder.mutation<CandidateProfile, { id: number; body: FormData | Partial<CandidateProfile> }>({
+      query: ({ id, body }) => ({
+        url: `/candidates/${id}/`,
         method: "PATCH",
         body,
       }),
     }),
 
-    updateCandidate: builder.mutation<
-      Candidate,
-      { id: string; body: Partial<Candidate> }
-    >({
-      query: ({ id, body }) => ({
+    deleteCandidate: builder.mutation<void, number>({
+      query: (id) => ({
         url: `/candidates/${id}/`,
-        method: "PATCH",
-        body,
+        method: "DELETE",
       }),
     }),
 
@@ -88,5 +106,6 @@ export const {
   useGetCurrentCandidateQuery,
   useCompleteProfileMutation,
   useUpdateCandidateMutation,
+  useDeleteCandidateMutation,
   useGetDashboardQuery: useGetCandidateDashboardQuery,
 } = candidateApi;

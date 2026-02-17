@@ -4,7 +4,7 @@ import { RootState } from "../store";
 import { logout } from "../store/slices/authSlice";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useUnreadCount } from "@/app/hooks/useApi";
+import { useGetUnreadCountQuery } from "@/app/store/api";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./LanguageSwitcher";
 
@@ -13,19 +13,17 @@ export function Navbar() {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   
-  // Har doim hook chaqirish (rules)
-  const unreadResult = useUnreadCount();
-  const unreadData = unreadResult.isError ? null : unreadResult.data;
+  const { data: unreadData } = useGetUnreadCountQuery(undefined, {
+    skip: !accessToken,
+  });
   
-  // useTranslation hook ni mounted state'dan oldin ishlatish mumkin
-  // lekin rendering'da faqat mounted bo'lganda ishlatamiz
-  const { t } = useTranslation("common");
+  const { t, ready } = useTranslation("common");
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; // hydration mismatch oldini oladi
+  if (!mounted || !ready) return null;
 
   const isAuthenticated = Boolean(accessToken);
 
